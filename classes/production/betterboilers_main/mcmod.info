@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "betterboilers",
+    "name": "BetterBoilers",
+    "description": "Multiblock boilers and more!",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "b0undarybreaker"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
