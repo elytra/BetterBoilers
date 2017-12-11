@@ -6,10 +6,10 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModItems {
 
-    public static ItemBase logoFake = new ItemBase("logo_fake").setCreativeTab(BetterBoilers.creativeTab);
+    public static ItemBase logoFake = new ItemBase("logo_fake").setCreativeTab(BetterBoilers.creativeTab); // this is gonna go away, be warned
 
     public static ItemBase[] allItems = {
-            //exhaustedLapis
+            logoFake
     };
 
     public static void register(IForgeRegistry<Item> registry) {

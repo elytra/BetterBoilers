@@ -2,9 +2,14 @@
 
 #blocks
 fluid.steam=Steam
+tile.boiler.name=Boiler Block
+tile.boiler_valve.name=Boiler Valve
+tile.boiler_vent.name=Boiler Vent
+tile.firebox.name=Firebox
+tile.controller.name=Boiler Controller
 
 #tooltips
 
 #messages
 
-itemGroup.betterboilers=BetterBoilers
+itemGroup.betterboilers=Better Boilers

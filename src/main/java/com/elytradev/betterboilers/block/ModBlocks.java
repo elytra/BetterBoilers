@@ -1,7 +1,9 @@
 package com.elytradev.betterboilers.block;
 
+import com.elytradev.betterboilers.BetterBoilers;
 import com.elytradev.betterboilers.block.fluids.BlockSteam;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -12,17 +14,22 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModBlocks {
 
-    //public static BlockDistiller distiller = new BlockDistiller().setCreativeTab(Opaline.creativeTab);
+    public static BlockBase boiler = new BlockBase(Material.IRON, "boiler").setCreativeTab(BetterBoilers.creativeTab);
+    public static BlockBase valve = new BlockBase(Material.IRON, "boiler_valve").setCreativeTab(BetterBoilers.creativeTab);
+    public static BlockBase vent = new BlockBase(Material.IRON, "boiler_vent").setCreativeTab(BetterBoilers.creativeTab);
+    public static BlockBase firebox = new BlockBase(Material.ROCK, "firebox").setCreativeTab(BetterBoilers.creativeTab);
+    public static BlockBase controller = new BlockBase(Material.ROCK, "controller").setCreativeTab(BetterBoilers.creativeTab);
+
 
     public static Fluid fluidSteam = new Fluid("steam",
-            new ResourceLocation("steam", "blocks/fluids/steam_still"),
-            new ResourceLocation("steam", "blocks/fluids/steam_flowing"))
-            .setDensity(1) //the density of normal water
+            new ResourceLocation("betterboilers", "blocks/fluids/steam_still"),
+            new ResourceLocation("betterboilers", "blocks/fluids/steam_flowing"))
+            .setDensity(-5) //lighter than air
             .setTemperature(373) //100ºF
-            .setRarity(EnumRarity.UNCOMMON);
+            .setGaseous(true);
 
     public static IBlockBase[] allBlocks = {
-            //distiller
+            boiler, valve, vent, firebox, controller
     };
 
     public static void register(IForgeRegistry<Block> registry) {

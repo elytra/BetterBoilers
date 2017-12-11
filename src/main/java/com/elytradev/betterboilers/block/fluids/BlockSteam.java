@@ -12,8 +12,9 @@ public class BlockSteam extends BlockFluidClassic {
         super(fluid, Material.WATER);
         this.quantaPerBlock= 8;
         this.quantaPerBlockFloat = 8f;
-        this.tickRate = 7;
+        this.tickRate = 3;
         this.temperature = 373;
+        this.density = -5;
 
         this.name = name;
 

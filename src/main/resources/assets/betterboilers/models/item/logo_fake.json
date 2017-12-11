@@ -1,6 +1,6 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "opaline:items/logo_fake"
+		"layer0": "betterboilers:items/logo_fake"
 	}
 }
