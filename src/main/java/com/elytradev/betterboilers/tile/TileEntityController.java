@@ -116,24 +116,4 @@ public class TileEntityController extends TileEntity implements ITickable{
         return networkMemberLocations.contains(pos);
     }
 
-    @Override
-    public BlockPos getPosition() {
-        return getPos();
-    }
-
-    @Override
-    public double getX() {
-        return getPos().getX()+0.5;
-    }
-
-    @Override
-    public double getY() {
-        return getPos().getY()+0.5;
-    }
-
-    @Override
-    public double getZ() {
-        return getPos().getZ()+0.5;
-    }
-
 }
