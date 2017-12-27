@@ -29,6 +29,7 @@ public class TileEntityController extends TileEntity implements ITickable{
     public ConcreteFluidTank tankSteam;
 
     private static final int MAXIMUM_BLOCKS_PER_MULTIBLOCK = 1000;
+    private transient Set<BlockPos> networkMemberLocations = Sets.newHashSet();
 
     public void update() {};
 
@@ -98,6 +99,41 @@ public class TileEntityController extends TileEntity implements ITickable{
             }
         }
         totalScanned = itr;
+    }
+
+    public void onNetworkPatched(TileEntityBoilerPart part) {
+        if (totalScanned == 0) return;
+        if (networkMemberLocations.add(part.getPos())) {
+            totalScanned++;
+            if (totalScanned > 100) {
+                error = true;
+                errorReason = "network_too_big";
+            }
+        }
+    }
+
+    public boolean knowsOfMemberAt(BlockPos pos) {
+        return networkMemberLocations.contains(pos);
+    }
+
+    @Override
+    public BlockPos getPosition() {
+        return getPos();
+    }
+
+    @Override
+    public double getX() {
+        return getPos().getX()+0.5;
+    }
+
+    @Override
+    public double getY() {
+        return getPos().getY()+0.5;
+    }
+
+    @Override
+    public double getZ() {
+        return getPos().getZ()+0.5;
     }
 
 }
