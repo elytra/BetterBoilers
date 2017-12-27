@@ -13,8 +13,6 @@ public class BlockBoilerVent extends BlockTileEntity<TileEntityBoilerVent> imple
     public BlockBoilerVent() {
         super(Material.IRON, "boiler_vent");
 
-        setUnlocalizedName(name);
-        setRegistryName(name);
         setCreativeTab(BetterBoilers.creativeTab);
     }
 

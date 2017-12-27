@@ -13,8 +13,6 @@ public class BlockFireboxHatch extends BlockTileEntity<TileEntityFireboxHatch> i
     public BlockFireboxHatch() {
         super(Material.ROCK, "firebox_hatch");
 
-        setUnlocalizedName(name);
-        setRegistryName(name);
         setCreativeTab(BetterBoilers.creativeTab);
     }
 

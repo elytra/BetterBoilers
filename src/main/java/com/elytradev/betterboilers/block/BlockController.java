@@ -13,8 +13,6 @@ public class BlockController extends BlockTileEntity<TileEntityController> imple
     public BlockController() {
         super(Material.ROCK, "controller");
 
-        setUnlocalizedName(name);
-        setRegistryName(name);
         setCreativeTab(BetterBoilers.creativeTab);
     }
 

@@ -33,17 +33,14 @@ public class TileEntityController extends TileEntity implements ITickable{
 
     public void update() {};
 
-    @Override
     public boolean hasController() {
         return true;
     }
 
-    @Override
     public TileEntityController getController() {
         return this;
     }
 
-    @Override
     public void setController(TileEntityController controller) {}
 
     public void scanNetwork(BiPredicate<World, BlockPos> predicate) {

@@ -10,8 +10,6 @@ public class BoilerBlock extends BlockBase implements IBoilerBlock {
     public BoilerBlock(Material material, String name) {
         super(material, name);
 
-        setUnlocalizedName(name);
-        setRegistryName(name);
         setCreativeTab(BetterBoilers.creativeTab);
     }
 }

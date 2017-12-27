@@ -63,20 +63,7 @@ public abstract class TileEntityBoilerPart extends TileEntity {
             controllerPos = controller.getPos().subtract(getPos());
         }
         this.controller = controller;
-        if (controller != null) {
-            for (EnumFacing ef : EnumFacing.VALUES) {
-                TileEntity neighbor = world.getTileEntity(getPos().offset(ef));
-                if (neighbor instanceof TileEntityBoilerPart) {
-                    TileEntityBoilerPart part = (TileEntityBoilerPart)neighbor;
-                    if (!part.hasController() && this.hasController()) {
-                        part.setController(controller);
-                        controller.onNetworkPatched(part);
-                    }
-                }
-            }
-        }
     }
-
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
@@ -84,20 +71,6 @@ public abstract class TileEntityBoilerPart extends TileEntity {
     }
 
     public void handleNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-        TileEntity te = world.getTileEntity(neighbor);
-        if (te instanceof TileEntityBoilerPart) {
-            TileEntityBoilerPart part = (TileEntityBoilerPart)te;
-            if (!part.hasController() && this.hasController()) {
-                part.setController(this.getController());
-                getController().onNetworkPatched(part);
-            }
-        } else {
-            if (hasController()) {
-                if (getController().knowsOfMemberAt(neighbor)) {
-                    getController().scanNetwork();
-                }
-            }
-        }
-    }
 
+    }
 }

@@ -13,8 +13,6 @@ public class BlockBoilerValve extends BlockTileEntity<TileEntityBoilerValve> imp
     public BlockBoilerValve() {
         super(Material.IRON, "boiler_valve");
 
-        setUnlocalizedName(name);
-        setRegistryName(name);
         setCreativeTab(BetterBoilers.creativeTab);
     }
 
