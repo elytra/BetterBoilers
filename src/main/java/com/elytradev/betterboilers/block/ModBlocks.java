@@ -1,10 +1,8 @@
 package com.elytradev.betterboilers.block;
 
-import com.elytradev.betterboilers.BetterBoilers;
 import com.elytradev.betterboilers.block.fluids.BlockSteam;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
@@ -14,11 +12,12 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModBlocks {
 
-    public static BlockBase boiler = new BlockBase(Material.IRON, "boiler").setCreativeTab(BetterBoilers.creativeTab);
-    public static BlockBase valve = new BlockBase(Material.IRON, "boiler_valve").setCreativeTab(BetterBoilers.creativeTab);
-    public static BlockBase vent = new BlockBase(Material.IRON, "boiler_vent").setCreativeTab(BetterBoilers.creativeTab);
-    public static BlockBase firebox = new BlockBase(Material.ROCK, "firebox").setCreativeTab(BetterBoilers.creativeTab);
-    public static BlockBase controller = new BlockBase(Material.ROCK, "controller").setCreativeTab(BetterBoilers.creativeTab);
+    public static BoilerBlock boiler = new BoilerBlock(Material.IRON, "boiler");
+    public static BlockBoilerValve valve = new BlockBoilerValve();
+    public static BlockBoilerVent vent = new BlockBoilerVent();
+    public static BoilerBlock firebox = new BoilerBlock(Material.ROCK, "firebox");
+    public static BlockFireboxHatch hatch = new BlockFireboxHatch();
+    public static BlockController controller = new BlockController();
 
 
     public static Fluid fluidSteam = new Fluid("steam",
@@ -29,7 +28,7 @@ public class ModBlocks {
             .setGaseous(true);
 
     public static IBlockBase[] allBlocks = {
-            boiler, valve, vent, firebox, controller
+            boiler, valve, vent, firebox, hatch, controller
     };
 
     public static void register(IForgeRegistry<Block> registry) {
@@ -44,7 +43,10 @@ public class ModBlocks {
         fluidSteam.setBlock(steam);
         FluidRegistry.addBucketForFluid(ModBlocks.fluidSteam);
 
-        //GameRegistry.registerTileEntity(distiller.getTileEntityClass(), distiller.getRegistryName().toString());
+        GameRegistry.registerTileEntity(valve.getTileEntityClass(), valve.getRegistryName().toString());
+        GameRegistry.registerTileEntity(vent.getTileEntityClass(), vent.getRegistryName().toString());
+        GameRegistry.registerTileEntity(hatch.getTileEntityClass(), hatch.getRegistryName().toString());
+        GameRegistry.registerTileEntity(controller.getTileEntityClass(), controller.getRegistryName().toString());
 
     }
 

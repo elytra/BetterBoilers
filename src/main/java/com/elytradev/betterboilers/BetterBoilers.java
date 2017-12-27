@@ -33,7 +33,7 @@ import javax.annotation.Nullable;
 @Mod(modid = BetterBoilers.modId, name = BetterBoilers.name, version = BetterBoilers.version)
 public class BetterBoilers {
     public static final String modId = "betterboilers";
-    public static final String name  = "BetterBoilers";
+    public static final String name  = "Better Boilers";
     public static final String version = "@VERSION@";
 
     @Mod.Instance(modId)
@@ -51,19 +51,19 @@ public class BetterBoilers {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        System.out.println(name + " is loading!");
+        BBLog.info("oooh, steamy!" + name + " is loading!");
         MinecraftForge.EVENT_BUS.register(BBRecipes.class);
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new IGuiHandler() {
-            //public static final int DISTILLER = 0;
+            //public static final int BOILER = 0;
 
             @Nullable
             @Override
             public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
                 switch (ID) {
-//                    case DISTILLER:
-//                        return new DistillerContainer(
+//                    case BOILER:
+//                        return new BoilerContainer(
 //                                player.inventory, ((IContainerInventoryHolder)world.getTileEntity(new BlockPos(x,y,z))).getContainerInventory(),
-//                                (TileEntityDistiller)world.getTileEntity(new BlockPos(x,y,z)));
+//                                (TileEntityController)world.getTileEntity(new BlockPos(x,y,z)));
 
                     default:
                         return null;
@@ -76,11 +76,11 @@ public class BetterBoilers {
             @SideOnly(Side.CLIENT)
             public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
                 switch (ID) {
-//                    case DISTILLER:
-//                        DistillerContainer distillerContainer = new DistillerContainer(
+//                    case BOILER:
+//                        BoilerContainer boilerContainer = new BoilerContainer(
 //                                player.inventory, ((IContainerInventoryHolder)world.getTileEntity(new BlockPos(x,y,z))).getContainerInventory(),
-//                                (TileEntityDistiller)world.getTileEntity(new BlockPos(x,y,z)));
-//                        return new ConcreteGui(distillerContainer);
+//                                (TileEntityController)world.getTileEntity(new BlockPos(x,y,z)));
+//                        return new ConcreteGui(boilerContainer);
                     default:
                         return null;
                 }

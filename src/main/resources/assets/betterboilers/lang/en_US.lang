@@ -6,6 +6,7 @@ tile.boiler.name=Boiler Block
 tile.boiler_valve.name=Boiler Valve
 tile.boiler_vent.name=Boiler Vent
 tile.firebox.name=Firebox
+tile.firebox_hatch.name=Firebox Hatch
 tile.controller.name=Boiler Controller
 
 #tooltips
