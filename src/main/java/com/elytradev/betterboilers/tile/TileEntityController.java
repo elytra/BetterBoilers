@@ -1,6 +1,7 @@
 package com.elytradev.betterboilers.tile;
 
 import com.elytradev.betterboilers.BBLog;
+import com.elytradev.betterboilers.block.ModBlocks;
 import com.elytradev.concrete.inventory.ConcreteFluidTank;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
@@ -29,19 +30,8 @@ public class TileEntityController extends TileEntity implements ITickable{
     public ConcreteFluidTank tankSteam;
 
     private static final int MAXIMUM_BLOCKS_PER_MULTIBLOCK = 1000;
-    private transient Set<BlockPos> networkMemberLocations = Sets.newHashSet();
 
-    public void update() {};
-
-    public boolean hasController() {
-        return true;
-    }
-
-    public TileEntityController getController() {
-        return this;
-    }
-
-    public void setController(TileEntityController controller) {}
+    public void update() {}
 
     public void scanNetwork(BiPredicate<World, BlockPos> predicate) {
         if (!hasWorld()) return;
@@ -85,12 +75,32 @@ public class TileEntityController extends TileEntity implements ITickable{
                     members.add(pos);
                 }
             }
-
             itr++;
         }
 
+        int minY = 255;
+        for(BlockPos pos : members) minY = Math.min(pos.getY(), minY);
+        if (this.pos.getY() != minY) {
+            setControllerStatus(true, "misplaced controller");
+        }
+
         for (BlockPos pos : members) {
+
             TileEntity te = world.getTileEntity(pos);
+            int boilerBlockCount = 0;
+            int fireboxBlockCount = 0;
+            if(world.getBlockState(pos).getBlock()==ModBlocks.BOILER || world.getBlockState(pos).getBlock()== ModBlocks.VENT || world.getBlockState(pos).getBlock()==ModBlocks.VALVE) {
+                boilerBlockCount++;
+                if (pos.getY() == minY) {
+                    setControllerStatus(true, "misplaced boiler block");
+                }
+            }
+            if(world.getBlockState(pos).getBlock()==ModBlocks.FIREBOX || world.getBlockState(pos).getBlock()== ModBlocks.HATCH || world.getBlockState(pos).getBlock()==ModBlocks.CONTROLLER) {
+                fireboxBlockCount++;
+                if (pos.getY() != minY) {
+                    setControllerStatus(true, "misplaced firebox block");
+                }
+            }
             if (te != null && te instanceof TileEntityBoilerPart) {
                 ((TileEntityBoilerPart)te).setController(this);
             }
@@ -98,19 +108,10 @@ public class TileEntityController extends TileEntity implements ITickable{
         totalScanned = itr;
     }
 
-    public void onNetworkPatched(TileEntityBoilerPart part) {
-        if (totalScanned == 0) return;
-        if (networkMemberLocations.add(part.getPos())) {
-            totalScanned++;
-            if (totalScanned > 100) {
-                error = true;
-                errorReason = "network_too_big";
-            }
-        }
-    }
+    public void setControllerStatus(boolean error, String status) {
+        if (!error) {
 
-    public boolean knowsOfMemberAt(BlockPos pos) {
-        return networkMemberLocations.contains(pos);
+        }
     }
 
 }

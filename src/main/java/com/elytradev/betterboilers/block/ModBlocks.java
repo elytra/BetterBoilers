@@ -12,15 +12,15 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModBlocks {
 
-    public static BoilerBlock boiler = new BoilerBlock(Material.IRON, "boiler");
-    public static BlockBoilerValve valve = new BlockBoilerValve();
-    public static BlockBoilerVent vent = new BlockBoilerVent();
-    public static BoilerBlock firebox = new BoilerBlock(Material.ROCK, "firebox");
-    public static BlockFireboxHatch hatch = new BlockFireboxHatch();
-    public static BlockController controller = new BlockController();
+    public static final BoilerBlock BOILER = new BoilerBlock(Material.IRON, "boiler");
+    public static final BlockBoilerValve VALVE = new BlockBoilerValve();
+    public static final BlockBoilerVent VENT = new BlockBoilerVent();
+    public static final BoilerBlock FIREBOX = new BoilerBlock(Material.ROCK, "firebox");
+    public static final BlockFireboxHatch HATCH = new BlockFireboxHatch();
+    public static final BlockController CONTROLLER = new BlockController();
 
 
-    public static Fluid fluidSteam = new Fluid("steam",
+    public static final Fluid FLUID_STEAM = new Fluid("steam",
             new ResourceLocation("betterboilers", "blocks/fluids/steam_still"),
             new ResourceLocation("betterboilers", "blocks/fluids/steam_flowing"))
             .setDensity(-5) //lighter than air
@@ -28,7 +28,7 @@ public class ModBlocks {
             .setGaseous(true);
 
     public static IBlockBase[] allBlocks = {
-            boiler, valve, vent, firebox, hatch, controller
+            BOILER, VALVE, VENT, FIREBOX, HATCH, CONTROLLER
     };
 
     public static void register(IForgeRegistry<Block> registry) {
@@ -37,16 +37,16 @@ public class ModBlocks {
             registry.register(block.toBlock());
         }
 
-        FluidRegistry.registerFluid(ModBlocks.fluidSteam);
-        BlockSteam steam = new BlockSteam(fluidSteam, "fluid_steam");
+        FluidRegistry.registerFluid(ModBlocks.FLUID_STEAM);
+        BlockSteam steam = new BlockSteam(FLUID_STEAM, "fluid_steam");
         registry.register(steam);
-        fluidSteam.setBlock(steam);
-        FluidRegistry.addBucketForFluid(ModBlocks.fluidSteam);
+        FLUID_STEAM.setBlock(steam);
+        FluidRegistry.addBucketForFluid(ModBlocks.FLUID_STEAM);
 
-        GameRegistry.registerTileEntity(valve.getTileEntityClass(), valve.getRegistryName().toString());
-        GameRegistry.registerTileEntity(vent.getTileEntityClass(), vent.getRegistryName().toString());
-        GameRegistry.registerTileEntity(hatch.getTileEntityClass(), hatch.getRegistryName().toString());
-        GameRegistry.registerTileEntity(controller.getTileEntityClass(), controller.getRegistryName().toString());
+        GameRegistry.registerTileEntity(VALVE.getTileEntityClass(), VALVE.getRegistryName().toString());
+        GameRegistry.registerTileEntity(VENT.getTileEntityClass(), VENT.getRegistryName().toString());
+        GameRegistry.registerTileEntity(HATCH.getTileEntityClass(), HATCH.getRegistryName().toString());
+        GameRegistry.registerTileEntity(CONTROLLER.getTileEntityClass(), CONTROLLER.getRegistryName().toString());
 
     }
 
