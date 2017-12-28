@@ -1,6 +1,7 @@
 package com.elytradev.betterboilers.tile;
 
 import com.elytradev.betterboilers.BBLog;
+import com.elytradev.betterboilers.block.IBoilerBlock;
 import com.elytradev.betterboilers.block.ModBlocks;
 import com.elytradev.concrete.inventory.ConcreteFluidTank;
 import com.google.common.collect.HashMultiset;
@@ -28,10 +29,28 @@ public class TileEntityController extends TileEntity implements ITickable{
     public String errorReason;
     public ConcreteFluidTank tankWater;
     public ConcreteFluidTank tankSteam;
+    private int boilerBlockCount = 0;
+    private int fireboxBlockCount = 0;
+    public static final int RESCAN_TIME = 100;
+    private int currentScanTime = 0;
 
     private static final int MAXIMUM_BLOCKS_PER_MULTIBLOCK = 1000;
 
-    public void update() {}
+    public TileEntityController() {
+        this.tankWater = new ConcreteFluidTank(1000).withFillValidator((it)->(it.getFluid() == ModBlocks.FLUID_STEAM));
+        this.tankSteam = new ConcreteFluidTank(500).withFillValidator((it)->false);
+        tankWater.listen(this::markDirty);
+        tankSteam.listen(this::markDirty);
+    }
+
+    public void update() {
+        if (currentScanTime >= RESCAN_TIME) {
+            BiPredicate<World, BlockPos> predicate = (world,pos)->world.getBlockState(pos).getBlock() instanceof IBoilerBlock;
+            scanNetwork(predicate);
+            currentScanTime = 0;
+        }
+        currentScanTime++;
+    }
 
     public void scanNetwork(BiPredicate<World, BlockPos> predicate) {
         if (!hasWorld()) return;
@@ -50,12 +69,11 @@ public class TileEntityController extends TileEntity implements ITickable{
 		}*/
 
         int totalScanned = 0;
-        boolean error = false;
 
         int itr = 0;
         while (!queue.isEmpty()) {
             if (itr > MAXIMUM_BLOCKS_PER_MULTIBLOCK) {
-                error = true;
+                setControllerStatus(true, "multiblock too big");
                 return;
             }
             BlockPos pos = queue.remove(0);
@@ -82,23 +100,30 @@ public class TileEntityController extends TileEntity implements ITickable{
         for(BlockPos pos : members) minY = Math.min(pos.getY(), minY);
         if (this.pos.getY() != minY) {
             setControllerStatus(true, "misplaced controller");
+            return;
         }
 
         for (BlockPos pos : members) {
 
             TileEntity te = world.getTileEntity(pos);
-            int boilerBlockCount = 0;
-            int fireboxBlockCount = 0;
+            if(world.getBlockState(pos).getBlock()==ModBlocks.CONTROLLER) {
+                if (pos != this.getPos()) {
+                    setControllerStatus(true, "multiple controllers");
+                    return;
+                }
+            }
             if(world.getBlockState(pos).getBlock()==ModBlocks.BOILER || world.getBlockState(pos).getBlock()== ModBlocks.VENT || world.getBlockState(pos).getBlock()==ModBlocks.VALVE) {
                 boilerBlockCount++;
                 if (pos.getY() == minY) {
-                    setControllerStatus(true, "misplaced boiler block");
+                    setControllerStatus(true, "misplaced boiler block, valve or vent");
+                    return;
                 }
             }
-            if(world.getBlockState(pos).getBlock()==ModBlocks.FIREBOX || world.getBlockState(pos).getBlock()== ModBlocks.HATCH || world.getBlockState(pos).getBlock()==ModBlocks.CONTROLLER) {
+            if(world.getBlockState(pos).getBlock()==ModBlocks.FIREBOX || world.getBlockState(pos).getBlock()== ModBlocks.HATCH) {
                 fireboxBlockCount++;
                 if (pos.getY() != minY) {
-                    setControllerStatus(true, "misplaced firebox block");
+                    setControllerStatus(true, "misplaced firebox block or hatch");
+                    return;
                 }
             }
             if (te != null && te instanceof TileEntityBoilerPart) {
@@ -106,12 +131,11 @@ public class TileEntityController extends TileEntity implements ITickable{
             }
         }
         totalScanned = itr;
+        setControllerStatus(false, "no issues");
     }
 
     public void setControllerStatus(boolean error, String status) {
-        if (!error) {
-
-        }
+        BBLog.info(error + ", " + status);
     }
 
 }

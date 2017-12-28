@@ -51,7 +51,7 @@ public class BetterBoilers {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        BBLog.info("oooh, steamy!" + name + " is loading!");
+        BBLog.info("oooh, steamy! " + name + " is loading!");
         MinecraftForge.EVENT_BUS.register(BBRecipes.class);
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new IGuiHandler() {
             //public static final int BOILER = 0;
