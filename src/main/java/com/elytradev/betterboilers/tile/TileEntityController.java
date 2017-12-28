@@ -69,6 +69,8 @@ public class TileEntityController extends TileEntity implements ITickable{
 		}*/
 
         int totalScanned = 0;
+        boilerBlockCount = 0;
+        fireboxBlockCount = 0;
 
         int itr = 0;
         while (!queue.isEmpty()) {
@@ -104,7 +106,6 @@ public class TileEntityController extends TileEntity implements ITickable{
         }
 
         for (BlockPos pos : members) {
-
             TileEntity te = world.getTileEntity(pos);
             if(world.getBlockState(pos).getBlock()==ModBlocks.CONTROLLER) {
                 if (pos != this.getPos()) {
@@ -132,10 +133,12 @@ public class TileEntityController extends TileEntity implements ITickable{
         }
         totalScanned = itr;
         setControllerStatus(false, "no issues");
+        tankWater.setCapacity(1000*boilerBlockCount);
+        tankSteam.setCapacity(500*boilerBlockCount);
     }
 
     public void setControllerStatus(boolean error, String status) {
-        BBLog.info(error + ", " + status);
+        BBLog.info(error + ", " + status + ", water capacity " + tankWater.getCapacity());
     }
 
 }
