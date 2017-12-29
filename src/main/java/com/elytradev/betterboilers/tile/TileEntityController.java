@@ -234,7 +234,7 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
 
     private boolean processFluid() {
         FluidStack tankDrained = tankWater.drain(100, false);
-        int tankFilled = tankSteam.fill(new FluidStack(ModBlocks.FLUID_STEAM, 50), true);
+        int tankFilled = tankSteam.fill(new FluidStack(ModBlocks.FLUID_STEAM, 50), false);
         return (tankDrained != null && tankFilled != 50);
     }
 
