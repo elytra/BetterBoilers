@@ -13,4 +13,6 @@ tile.controller.name=Boiler Controller
 
 #messages
 
+#misc
+gui.boiler.name=Boiler
 itemGroup.betterboilers=Better Boilers
