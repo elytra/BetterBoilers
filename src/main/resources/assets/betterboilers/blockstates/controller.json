@@ -2,16 +2,36 @@
 	"forge_marker": 1,
 	"defaults": {
 		"textures": {
-			"side": "betterboilers:blocks/firebox-control",
+			"side": "betterboilers:blocks/firebox-control-error",
 			"end": "betterboilers:blocks/firebox"
 		}
 	},
 	"variants": {
+		"active": {
+			"true": {
+				"model": "minecraft:cube_column",
+				"textures": {
+					"side": "betterboilers:blocks/firebox-control"
+				}
+			},
+			"false": {
+				"model": "minecraft:cube_column",
+				"textures": {
+					"side": "betterboilers:blocks/firebox-control-error"
+				}
+			}
+		},
 		"normal": {
-			"model": "cube_column"
+			"model": "minecraft:cube_column",
+			"textures": {
+				"side": "betterboilers:blocks/firebox-control-error"
+			}
 		},
 		"inventory": {
-			"model": "cube_column"
+			"model": "minecraft:cube_column",
+			"textures": {
+				"side": "betterboilers:blocks/firebox-control"
+			}
 		}
 	}
 }

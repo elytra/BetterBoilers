@@ -1,6 +1,7 @@
 package com.elytradev.betterboilers.tile;
 
 import com.elytradev.betterboilers.BBLog;
+import com.elytradev.betterboilers.block.BlockController;
 import com.elytradev.betterboilers.block.IBoilerBlock;
 import com.elytradev.betterboilers.block.ModBlocks;
 import com.elytradev.betterboilers.util.FluidAccess;
@@ -41,7 +42,6 @@ import java.util.function.BiPredicate;
 public class TileEntityController extends TileEntity implements ITickable, IContainerInventoryHolder {
 
     private int totalScanned = 0;
-    public boolean error = false;
     public ConcreteFluidTank tankWater;
     public ConcreteFluidTank tankSteam;
     public ConcreteItemStorage inv;
@@ -75,7 +75,7 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
         currentScanTime++;
 
         if (!world.isRemote) {
-            if (processFluid()) {
+            if (canProcessFluid()) {
                 if (consumeFuel(0)) currentProcessTime += fireboxBlockCount;
                 if (consumeFuel(1)) currentProcessTime += fireboxBlockCount;
                 if (consumeFuel(2)) currentProcessTime += fireboxBlockCount;
@@ -180,6 +180,8 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         NBTTagCompound tag = super.writeToNBT(compound);
         tag.setInteger("BoilerCount", boilerBlockCount);
+        tag.setIntArray("CurrentFuelTime", currentFuelTime);
+        tag.setIntArray("MaxFuelTime", maxFuelTime);
         tag.setTag("WaterTank", tankWater.writeToNBT(new NBTTagCompound()));
         tag.setTag("SteamTank", tankSteam.writeToNBT(new NBTTagCompound()));
         tag.setTag("Inventory", inv.serializeNBT());
@@ -192,6 +194,8 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
         boilerBlockCount = compound.getInteger("BoilerCount");
         tankWater.setCapacity(1000 * boilerBlockCount);
         tankSteam.setCapacity(500 * boilerBlockCount);
+        currentFuelTime = compound.getIntArray("CurrentFuelTime");
+        maxFuelTime = compound.getIntArray("MaxFuelTime");
         tankWater.readFromNBT(compound.getCompoundTag("WaterTank"));
         tankSteam.readFromNBT(compound.getCompoundTag("SteamTank"));
         inv.deserializeNBT(compound.getCompoundTag("Inventory"));
@@ -232,7 +236,7 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
         }
     }
 
-    private boolean processFluid() {
+    private boolean canProcessFluid() {
         FluidStack tankDrained = tankWater.drain(100, false);
         int tankFilled = tankSteam.fill(new FluidStack(ModBlocks.FLUID_STEAM, 50), false);
         return (tankDrained != null && tankFilled != 50);
@@ -249,7 +253,7 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
                 return false;
             }
         }
-        currentFuelTime[slot] --;
+        currentFuelTime[slot] -= fireboxBlockCount;
         return true;
     }
 
@@ -275,9 +279,9 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
     public void setControllerStatus(boolean isError, String status) {
         BBLog.info(isError + ", " + status + ", water capacity " + tankWater.getCapacity());
         if (isError) {
-            this.error = true;
+            world.setBlockState(this.getPos(), ModBlocks.CONTROLLER.getDefaultState().withProperty(BlockController.ACTIVE, false));
         } else {
-            this.error = false;
+            world.setBlockState(this.getPos(), ModBlocks.CONTROLLER.getDefaultState().withProperty(BlockController.ACTIVE, true));
         }
     }
 

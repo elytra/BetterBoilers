@@ -15,8 +15,7 @@ import net.minecraft.world.World;
 public class BlockController extends BlockTileEntity<TileEntityController> implements IBoilerBlock {
 
     protected String name;
-//    public static PropertyBool ACTIVE = PropertyBool.create("active");
-//    public static int STATE = (1<<2);
+    public static PropertyBool ACTIVE = PropertyBool.create("active");
 
     public BlockController() {
         super(Material.ROCK, "controller");
@@ -25,29 +24,19 @@ public class BlockController extends BlockTileEntity<TileEntityController> imple
         setCreativeTab(BetterBoilers.creativeTab);
     }
 
-//    public BlockStateContainer createBlockState(){
-//        return new BlockStateContainer(this, ACTIVE);
-//    }
-//
-//    public int getMetaFromState(IBlockState state){
-//        int meta = 0;
-//        if(state.getValue(ACTIVE)){meta |= STATE;}
-//        return meta;
-//    }
-//
-//    public IBlockState getStateFromMeta(int meta){
-//        boolean active = (meta & STATE) != 0;
-//        return blockState.getBaseState().withProperty(ACTIVE, active);
-//    }
-//
-//    @Override
-//    public void updateTick(World world, BlockPos pos, IBlockState state)
-//    {
-//        if(state.getValue(ACTIVE)){
-//                world.setBlockState(pos, state.withProperty(ACTIVE,true));
-//        }
-//
-//    }
+    @Override
+    public BlockStateContainer createBlockState(){
+        return new BlockStateContainer(this, ACTIVE);
+    }
+
+    public int getMetaFromState(IBlockState state){
+        return state.getValue(ACTIVE) ? 1 : 0;
+    }
+
+    public IBlockState getStateFromMeta(int meta){
+        return getDefaultState().withProperty(ACTIVE, meta == 1);
+    }
+
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
