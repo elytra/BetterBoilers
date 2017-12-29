@@ -59,7 +59,6 @@ public class TileEntityController extends TileEntity implements ITickable{
         List<BlockPos> members = new ArrayList<>();
         List<BlockPos> queue = new ArrayList<>();
         queue.add(getPos());
-        boolean foundOtherController = false;
 		/*//This code used to wipe existing registrations so that an orphaned valve doesn't continue to claim this controller
 		for (BlockPos pos : networkMemberLocations) {
 			TileEntity te = world.getTileEntity(pos);
@@ -113,17 +112,20 @@ public class TileEntityController extends TileEntity implements ITickable{
                     return;
                 }
             }
-            if(world.getBlockState(pos).getBlock()==ModBlocks.BOILER || world.getBlockState(pos).getBlock()== ModBlocks.VENT || world.getBlockState(pos).getBlock()==ModBlocks.VALVE) {
+            if(world.getBlockState(pos).getBlock()==ModBlocks.BOILER
+                    || world.getBlockState(pos).getBlock()== ModBlocks.VENT
+                    || world.getBlockState(pos).getBlock()==ModBlocks.VALVE) {
                 boilerBlockCount++;
                 if (pos.getY() == minY) {
-                    setControllerStatus(true, "misplaced boiler block, valve or vent");
+                    setControllerStatus(true, "misplaced boiler component");
                     return;
                 }
             }
-            if(world.getBlockState(pos).getBlock()==ModBlocks.FIREBOX || world.getBlockState(pos).getBlock()== ModBlocks.HATCH) {
+            if(world.getBlockState(pos).getBlock()==ModBlocks.FIREBOX
+                    || world.getBlockState(pos).getBlock()== ModBlocks.HATCH) {
                 fireboxBlockCount++;
                 if (pos.getY() != minY) {
-                    setControllerStatus(true, "misplaced firebox block or hatch");
+                    setControllerStatus(true, "misplaced firebox component");
                     return;
                 }
             }
