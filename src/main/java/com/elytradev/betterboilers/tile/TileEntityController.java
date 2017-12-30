@@ -3,7 +3,6 @@ package com.elytradev.betterboilers.tile;
 import com.elytradev.betterboilers.block.BlockController;
 import com.elytradev.betterboilers.block.IBoilerBlock;
 import com.elytradev.betterboilers.block.ModBlocks;
-import com.elytradev.betterboilers.util.C28n;
 import com.elytradev.concrete.inventory.*;
 import com.google.common.base.Predicates;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -33,7 +32,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.BiPredicate;
 
-public class TileEntityController extends TileEntity implements ITickable, IContainerInventoryHolder {
+public class TileEntityController extends TileEntity implements ITickable, IContainerInventoryHolder, IBoilerPart {
 
     private int totalScanned = 0;
     public TextComponentTranslation errorReason;
@@ -51,6 +50,13 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
     private int[] maxFuelTime = new int[3];
 
     private static final int MAXIMUM_BLOCKS_PER_MULTIBLOCK = 1000;
+
+    public TileEntityController getController() {
+        return this;
+    }
+
+    public void setController(TileEntityController controller) {
+    }
 
     public TileEntityController() {
         this.inv = new ConcreteItemStorage(3).withValidators(Validators.FURNACE_FUELS,
@@ -177,6 +183,7 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         NBTTagCompound tag = super.writeToNBT(compound);
         tag.setInteger("BoilerCount", boilerBlockCount);
+        tag.setInteger("FireboxCount", fireboxBlockCount);
         tag.setIntArray("CurrentFuelTime", currentFuelTime);
         tag.setIntArray("MaxFuelTime", maxFuelTime);
         tag.setTag("WaterTank", tankWater.writeToNBT(new NBTTagCompound()));
@@ -189,6 +196,7 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         boilerBlockCount = compound.getInteger("BoilerCount");
+        fireboxBlockCount = compound.getInteger("FireboxCount");
         tankWater.setCapacity(1000 * boilerBlockCount);
         tankSteam.setCapacity(500 * boilerBlockCount);
         currentFuelTime = compound.getIntArray("CurrentFuelTime");
@@ -236,13 +244,13 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
     private boolean canProcessFluid() {
         FluidStack tankDrained = tankWater.drain(100, false);
         int tankFilled = tankSteam.fill(new FluidStack(ModBlocks.FLUID_STEAM, 50), false);
-        return (tankDrained != null && tankFilled != 50);
+        return (tankDrained != null && tankFilled == 50);
     }
 
     private boolean consumeFuel(int slot) {
-        if (currentFuelTime[slot] == 0) {
+        if (currentFuelTime[slot] <= 0) {
             ItemStack usedFuel = inv.extractItem(slot, 1, false);
-            if (!usedFuel.isEmpty() && tankWater.getFluidAmount() != 0) {
+            if (!usedFuel.isEmpty()) {
                 int newFuelTicks = TileEntityFurnace.getItemBurnTime(usedFuel);
                 maxFuelTime[slot] = newFuelTicks;
                 currentFuelTime[slot] = newFuelTicks;
@@ -280,6 +288,18 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
         } else {
             world.setBlockState(this.getPos(), ModBlocks.CONTROLLER.getDefaultState().withProperty(BlockController.ACTIVE, true));
         }
+    }
+
+    public ConcreteFluidTank getTankWater() {
+        return tankWater;
+    }
+
+    public ConcreteFluidTank getTankSteam() {
+        return tankSteam;
+    }
+
+    public ConcreteItemStorage getInv() {
+        return inv;
     }
 
     @Override

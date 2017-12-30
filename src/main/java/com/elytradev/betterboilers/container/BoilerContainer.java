@@ -38,9 +38,9 @@ public class BoilerContainer extends ConcreteContainer {
         panel.add(playerInv, 0, 87);
         panel.add(tankWater, 11, 11, 50, 32);
         panel.add(tankSteam, 112, 23, 18, 48);
-        panel.add(fuelTicks0, 11, 46, 16, 16);
-        panel.add(fuelTicks1, 29, 46, 16, 16);
-        panel.add(fuelTicks2, 47, 46, 16, 16);
-        panel.add(progressTicks, 69, 37, 24, 17);
+        panel.add(fuelTicks0, 11, 46, 14, 14);
+        panel.add(fuelTicks1, 29, 46, 14, 14);
+        panel.add(fuelTicks2, 47, 46, 14, 14);
+        panel.add(progressTicks, 73, 37, 24, 17);
     }
 }

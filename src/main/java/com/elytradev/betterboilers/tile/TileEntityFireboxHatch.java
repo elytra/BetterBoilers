@@ -1,6 +1,45 @@
 package com.elytradev.betterboilers.tile;
 
-import net.minecraft.tileentity.TileEntity;
+import com.elytradev.concrete.inventory.ValidatedItemHandlerView;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
 
-public class TileEntityFireboxHatch extends TileEntity {
+import javax.annotation.Nullable;
+
+public class TileEntityFireboxHatch extends TileEntityBoilerPart implements IBoilerPart{
+    private TileEntityController controller;
+
+    @Override
+    @Nullable
+    public TileEntityController getController() {
+        return this.controller;
+    }
+
+    @Override
+    public void setController(TileEntityController controller) {
+        this.controller = controller;
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+        if (controller==null) return false; //!important
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return true;
+        } else {
+            return super.hasCapability(capability, facing);
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+        if (controller==null) return null; //!important
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return (T) new ValidatedItemHandlerView(controller.getInv());
+        } else {
+            return super.getCapability(capability, facing);
+        }
+    }
+
 }
