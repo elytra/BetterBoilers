@@ -79,7 +79,7 @@ public class BBRecipes {
                 'u', new ItemStack(Items.BLAZE_POWDER)
         ));
         recipe(r, new ShapedOreRecipe(new ResourceLocation("betterboilers:items"), new ItemStack(ModItems.INSPECTOR, 1),
-                "i  ", "ui ", "ib ",
+                "i ", "ui", "ib",
                 'b', new ItemStack(Items.BOOK),
                 'i', new ItemStack(Items.IRON_INGOT),
                 'u', new ItemStack(Items.FLINT)

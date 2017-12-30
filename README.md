@@ -4,7 +4,7 @@
 
 [>> Downloads <<](https://github.com/elytra/betterboilers/releases)
 
-*Because fuck Railcraft*
+*Ooh, steamy~*
 
 **This mod is open source and under a permissive license.** All Elytra mods are,
 and as such, can be included in any modpack on any platform without prior
@@ -13,4 +13,10 @@ need to ask to use them. See the [LICENSE file](COPYING.gpl) and [COPYING except
 
 ## What is this mod?
 
-This mod is a work in progress, focused on giving a more fun, interesting alternative to generating RF. More will be here as the mod develops.
+This mod lets you create semi-free-form, multiblock steam boilers for any steam-based needs.
+
+TODO:
+- [x] Solid-fuel boilers
+- [ ] Fluid-fuel boilers 
+- [ ] Thermionics Heat boilers
+- [ ] Steam turbines/pistons/other built-in RF/FU generation
