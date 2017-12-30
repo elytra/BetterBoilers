@@ -1,5 +1,6 @@
 package com.elytradev.betterboilers.util;
 
+import com.elytradev.betterboilers.BBLog;
 import com.elytradev.betterboilers.block.ModBlocks;
 import com.elytradev.betterboilers.item.ModItems;
 import net.minecraft.init.Blocks;
@@ -23,26 +24,31 @@ public class BBRecipes {
 
         // Crafting bench recipes
 
-        recipe(r, new ShapedOreRecipe(new ResourceLocation("betterboilers:blocks"), new ItemStack(ModBlocks.BOILER, 16),
-                "bbb", "bib", "bbb",
-                'b', "plateBrass",
-                'i', new ItemStack(Items.IRON_INGOT)
-                ));
-        if (OreDictionary.getOres("plateBrass").isEmpty()) {
-            if (OreDictionary.getOres("ingotBrass").isEmpty()) {
-                recipe(r, new ShapedOreRecipe(new ResourceLocation("betterboilers:blocks"), new ItemStack(ModBlocks.BOILER, 16),
-                        "bbb", "bib", "bbb",
-                        'b', "ingotBrass",
-                        'i', new ItemStack(Items.IRON_INGOT)
-                ));
-            } else {
-                recipe(r, new ShapedOreRecipe(new ResourceLocation("betterboilers:blocks"), new ItemStack(ModBlocks.BOILER, 16),
-                        "bib", "iii", "bib",
-                        'b', new ItemStack(Items.GOLD_INGOT),
-                        'i', new ItemStack(Items.IRON_INGOT)
-                ));
-            }
+        String fallback = null;
+        if(!OreDictionary.getOres("plateBrass").isEmpty()) {
+            fallback = "plateBrass";
+        } else if (!OreDictionary.getOres("ingotBrass").isEmpty()) {
+            BBLog.warn("Oops, couldn't find brass plates! Falling back to brass ingot boiler recipe.");
+            fallback = "ingotBrass";
+        } else if (!OreDictionary.getOres("plateConstantan").isEmpty()) {
+            BBLog.warn("Oh dear, couldn't find any brass. Falling back to constantan plate boiler recipe.");
+            fallback = "plateConstantan";
         }
+        if (fallback != null) {
+            recipe(r, new ShapedOreRecipe(new ResourceLocation("betterboilers:blocks"), new ItemStack(ModBlocks.BOILER, 16),
+                    "bbb", "bib", "bbb",
+                    'b', fallback,
+                    'i', new ItemStack(Items.IRON_INGOT)
+            ));
+        } else {
+            BBLog.warn("What are you even using this mod for? Falling back to iron/gold boiler recipe.");
+            recipe(r, new ShapedOreRecipe(new ResourceLocation("betterboilers:blocks"), new ItemStack(ModBlocks.BOILER, 16),
+                    "bib", "iii", "bib",
+                    'b', new ItemStack(Items.GOLD_INGOT),
+                    'i', new ItemStack(Items.IRON_INGOT)
+            ));
+        }
+
         recipe(r, new ShapedOreRecipe(new ResourceLocation("betterboilers:blocks"), new ItemStack(ModBlocks.VALVE, 1),
                 " u ", "ibi", " u ",
                 'b', new ItemStack(ModBlocks.BOILER),
@@ -73,7 +79,7 @@ public class BBRecipes {
                 'u', new ItemStack(Items.BLAZE_POWDER)
         ));
         recipe(r, new ShapedOreRecipe(new ResourceLocation("betterboilers:items"), new ItemStack(ModItems.INSPECTOR, 1),
-                "i  ", "uii", "i b",
+                "i  ", "ui", "ib ",
                 'b', new ItemStack(Items.BOOK),
                 'i', new ItemStack(Items.IRON_INGOT),
                 'u', new ItemStack(Items.FLINT)
