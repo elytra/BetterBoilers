@@ -1,4 +1,5 @@
 #items
+item.inspector.name=Boiler Inspector
 
 #blocks
 fluid.steam=Steam
@@ -10,8 +11,17 @@ tile.firebox_hatch.name=Firebox Hatch
 tile.controller.name=Boiler Controller
 
 #tooltips
+tooltip.bb.inspector.0=What did you do this time?
+tooltip.bb.inspector.1=Sneak-use to check a boiler's status
 
 #messages
+msg.bb.tooBig=Multiblock too big. (maximum size 1,000 blocks)
+msg.bb.badController=Misplaced controller. (must be on firebox level)
+msg.bb.tooManyControllers=Multiple controllers. (only one controller per boiler)
+msg.bb.badBoiler=Misplaced boiler component. (no boiler components on firebox level)
+msg.bb.badFirebox=Misplaced firebox component. (firebox components only on the bottom level)
+msg.bb.noIssue=No issues
+
 
 #misc
 gui.boiler.name=Boiler

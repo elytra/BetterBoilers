@@ -1,19 +1,11 @@
 package com.elytradev.betterboilers.tile;
 
-import com.elytradev.betterboilers.BBLog;
 import com.elytradev.betterboilers.block.BlockController;
 import com.elytradev.betterboilers.block.IBoilerBlock;
 import com.elytradev.betterboilers.block.ModBlocks;
-import com.elytradev.betterboilers.util.FluidAccess;
+import com.elytradev.betterboilers.util.C28n;
 import com.elytradev.concrete.inventory.*;
 import com.google.common.base.Predicates;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multiset;
-import com.google.common.collect.Sets;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -25,10 +17,12 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -42,12 +36,13 @@ import java.util.function.BiPredicate;
 public class TileEntityController extends TileEntity implements ITickable, IContainerInventoryHolder {
 
     private int totalScanned = 0;
+    public TextComponentTranslation errorReason;
     public ConcreteFluidTank tankWater;
     public ConcreteFluidTank tankSteam;
     public ConcreteItemStorage inv;
     private int boilerBlockCount = 0;
     private int fireboxBlockCount = 0;
-    public static final int RESCAN_TIME = 100;
+    private static final int RESCAN_TIME = 100;
     private int currentScanTime = 100;
 
     private int currentProcessTime;
@@ -58,9 +53,11 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
     private static final int MAXIMUM_BLOCKS_PER_MULTIBLOCK = 1000;
 
     public TileEntityController() {
-        this.inv = new ConcreteItemStorage(3).withValidators(Validators.FURNACE_FUELS, Validators.FURNACE_FUELS, Validators.FURNACE_FUELS)
+        this.inv = new ConcreteItemStorage(3).withValidators(Validators.FURNACE_FUELS,
+                Validators.FURNACE_FUELS,
+                Validators.FURNACE_FUELS)
                 .withName(ModBlocks.CONTROLLER.getUnlocalizedName() + ".name");;
-        this.tankWater = new ConcreteFluidTank(1000).withFillValidator((it)->(it.getFluid() == ModBlocks.FLUID_STEAM));
+        this.tankWater = new ConcreteFluidTank(1000).withFillValidator((it)->(it.getFluid() == FluidRegistry.WATER));
         this.tankSteam = new ConcreteFluidTank(500).withFillValidator((it)->false);
         tankWater.listen(this::markDirty);
         tankSteam.listen(this::markDirty);
@@ -111,7 +108,7 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
         int itr = 0;
         while (!queue.isEmpty()) {
             if (itr > MAXIMUM_BLOCKS_PER_MULTIBLOCK) {
-                setControllerStatus(true, "multiblock too big");
+                setControllerStatus(true, "msg.bb.tooBig");
                 return;
             }
             BlockPos pos = queue.remove(0);
@@ -137,7 +134,7 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
         int minY = 255;
         for(BlockPos pos : members) minY = Math.min(pos.getY(), minY);
         if (this.pos.getY() != minY) {
-            setControllerStatus(true, "misplaced controller");
+            setControllerStatus(true, "msg.bb.badController");
             return;
         }
 
@@ -145,7 +142,7 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
             TileEntity te = world.getTileEntity(pos);
             if(world.getBlockState(pos).getBlock()==ModBlocks.CONTROLLER) {
                 if (pos != this.getPos()) {
-                    setControllerStatus(true, "multiple controllers");
+                    setControllerStatus(true, "msg.bb.tooManyControllers");
                     return;
                 }
             }
@@ -154,7 +151,7 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
                     || world.getBlockState(pos).getBlock()==ModBlocks.VALVE) {
                 boilerBlockCount++;
                 if (pos.getY() == minY) {
-                    setControllerStatus(true, "misplaced boiler component");
+                    setControllerStatus(true, "msg.bb.badBoiler");
                     return;
                 }
             }
@@ -162,7 +159,7 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
                     || world.getBlockState(pos).getBlock()== ModBlocks.HATCH) {
                 fireboxBlockCount++;
                 if (pos.getY() != minY) {
-                    setControllerStatus(true, "misplaced firebox component");
+                    setControllerStatus(true, "msg.bb.badFirebox");
                     return;
                 }
             }
@@ -171,7 +168,7 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
             }
         }
         totalScanned = itr;
-        setControllerStatus(false, "no issues");
+        setControllerStatus(false, "msg.bb.noIssue");
         tankWater.setCapacity(1000*boilerBlockCount);
         tankSteam.setCapacity(500*boilerBlockCount);
     }
@@ -277,7 +274,7 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
     }
 
     public void setControllerStatus(boolean isError, String status) {
-        BBLog.info(isError + ", " + status + ", water capacity " + tankWater.getCapacity());
+        errorReason = new TextComponentTranslation(status);
         if (isError) {
             world.setBlockState(this.getPos(), ModBlocks.CONTROLLER.getDefaultState().withProperty(BlockController.ACTIVE, false));
         } else {
