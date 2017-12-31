@@ -2,6 +2,7 @@ package com.elytradev.betterboilers.tile;
 
 import com.elytradev.betterboilers.block.BlockController;
 import com.elytradev.betterboilers.block.ModBlocks;
+import com.elytradev.betterboilers.util.BBConfig;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -16,7 +17,7 @@ import java.util.function.BiPredicate;
 
 public abstract class TileEntityControllerBase extends TileEntity {
 
-    protected int getMaxBlocksPerMultiblock() { return 1000; }
+    protected int getMaxBlocksPerMultiblock() { return BBConfig.defaultMaxMultiblock; }
     protected String status;
     public TextComponentTranslation errorReason;
     public enum ControllerStatus { ACTIVE, ERRORED }

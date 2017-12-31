@@ -2,6 +2,7 @@ package com.elytradev.betterboilers;
 
 import com.elytradev.betterboilers.container.BoilerContainer;
 import com.elytradev.betterboilers.tile.TileEntityBoilerController;
+import com.elytradev.betterboilers.util.BBConfig;
 import com.elytradev.concrete.inventory.IContainerInventoryHolder;
 import com.elytradev.concrete.inventory.gui.client.ConcreteGui;
 import com.elytradev.betterboilers.block.ModBlocks;
@@ -56,7 +57,10 @@ public class BetterBoilers {
     public void preInit(FMLPreInitializationEvent event) {
         BBLog.info("oooh, steamy! " + name + " is loading!");
         MinecraftForge.EVENT_BUS.register(BBRecipes.class);
-        Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+        BBConfig.setConfig(new Configuration(event.getSuggestedConfigurationFile()));
+        BBConfig.load();
+        BBConfig.save();
+
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new IGuiHandler() {
             public static final int BOILER = 0;
 

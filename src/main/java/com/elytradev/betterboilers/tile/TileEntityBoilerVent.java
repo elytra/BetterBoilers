@@ -19,7 +19,6 @@ public class TileEntityBoilerVent extends TileEntityBoilerPart implements IBoile
 
     @Override
     public void setController(TileEntityBoilerController controller) {
-        BBLog.info("added vent");
         this.controller = controller;
     }
 

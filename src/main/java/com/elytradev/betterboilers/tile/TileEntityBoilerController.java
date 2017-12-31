@@ -2,6 +2,7 @@ package com.elytradev.betterboilers.tile;
 
 import com.elytradev.betterboilers.block.IBoilerBlock;
 import com.elytradev.betterboilers.block.ModBlocks;
+import com.elytradev.betterboilers.util.BBConfig;
 import com.elytradev.concrete.inventory.*;
 import com.google.common.base.Predicates;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -39,11 +40,11 @@ public class TileEntityBoilerController extends TileEntityControllerBase impleme
     private int currentScanTime = 100;
 
     private int currentProcessTime;
-    private static final int PROCESS_LENGTH = 1000;
+    private static final int PROCESS_LENGTH = BBConfig.ticksToBoil;
     private int[] currentFuelTime = new int[3];
     private int[] maxFuelTime = new int[3];
 
-    protected int getMaxBlocksPerMultiblock() { return 1000; }
+    protected int getMaxBlocksPerMultiblock() { return BBConfig.defaultMaxMultiblock; }
 
     public TileEntityBoilerController getController() {
         return this;
@@ -78,8 +79,8 @@ public class TileEntityBoilerController extends TileEntityControllerBase impleme
                 if (consumeFuel(2)) currentProcessTime += fireboxBlockCount;
                 if (tankWater.getFluidAmount() == 0) currentProcessTime = 0;
                 if (currentProcessTime >= PROCESS_LENGTH) {
-                    tankWater.drain(100, true);
-                    tankSteam.fill(new FluidStack(ModBlocks.FLUID_STEAM, 50), true);
+                    tankWater.drain(2*BBConfig.steamPerBoil, true);
+                    tankSteam.fill(new FluidStack(ModBlocks.FLUID_STEAM, BBConfig.steamPerBoil), true);
                     currentProcessTime = 0;
                 }
             }
