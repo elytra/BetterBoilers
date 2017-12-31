@@ -8,7 +8,7 @@ tile.boiler_valve.name=Boiler Valve
 tile.boiler_vent.name=Boiler Vent
 tile.firebox.name=Firebox
 tile.firebox_hatch.name=Firebox Hatch
-tile.controller.name=Boiler Controller
+tile.controller.name=Solid-Fueled Boiler Controller
 
 #tooltips
 tooltip.bb.inspector.0=What did you do this time?

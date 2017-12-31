@@ -2,8 +2,8 @@ package com.elytradev.betterboilers.tile;
 
 public interface IBoilerPart {
 
-    public void setController(TileEntityController controller);
+    public void setController(TileEntityBoilerController controller);
 
-    public TileEntityController getController();
+    public TileEntityBoilerController getController();
 
 }

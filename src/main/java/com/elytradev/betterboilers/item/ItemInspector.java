@@ -1,6 +1,6 @@
 package com.elytradev.betterboilers.item;
 
-import com.elytradev.betterboilers.tile.TileEntityController;
+import com.elytradev.betterboilers.tile.TileEntityBoilerController;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
@@ -20,8 +20,8 @@ public class ItemInspector extends ItemBase {
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         TileEntity te = world.getTileEntity(pos);
         if (player.isSneaking()) {
-            if (te instanceof TileEntityController) {
-                TileEntityController controller = (TileEntityController)te;
+            if (te instanceof TileEntityBoilerController) {
+                TileEntityBoilerController controller = (TileEntityBoilerController)te;
                 if (!world.isRemote) {
                     player.sendMessage(controller.errorReason);
                 }

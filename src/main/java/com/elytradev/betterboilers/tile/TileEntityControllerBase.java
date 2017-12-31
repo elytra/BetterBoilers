@@ -17,7 +17,7 @@ import java.util.function.BiPredicate;
 public abstract class TileEntityControllerBase extends TileEntity {
 
     protected int getMaxBlocksPerMultiblock() { return 1000; }
-    private String status;
+    protected String status;
     public TextComponentTranslation errorReason;
     public enum ControllerStatus { ACTIVE, ERRORED }
 
@@ -30,11 +30,12 @@ public abstract class TileEntityControllerBase extends TileEntity {
         queue.add(getPos());
 
         int totalScanned = 0;
+        onDisassemble(world, members);
 
         int itr = 0;
         while (!queue.isEmpty()) {
             if (itr > getMaxBlocksPerMultiblock()) {
-                setControllerStatus(TileEntityController.ControllerStatus.ERRORED, "msg.bb.tooBig");
+                setControllerStatus(TileEntityBoilerController.ControllerStatus.ERRORED, "msg.bb.tooBig");
                 return;
             }
             BlockPos pos = queue.remove(0);
@@ -58,13 +59,13 @@ public abstract class TileEntityControllerBase extends TileEntity {
         }
 
         if (!validator.test(world, members)) {
-            setControllerStatus(TileEntityController.ControllerStatus.ERRORED, status);
+            setControllerStatus(TileEntityBoilerController.ControllerStatus.ERRORED, status);
             return;
         }
 
-
+        onAssemble(world, members);
         totalScanned = itr;
-        setControllerStatus(TileEntityController.ControllerStatus.ACTIVE, "msg.bb.noIssue");
+        setControllerStatus(TileEntityBoilerController.ControllerStatus.ACTIVE, "msg.bb.noIssue");
     }
 
     public void setControllerStatus( ControllerStatus state, String status) {
@@ -78,6 +79,6 @@ public abstract class TileEntityControllerBase extends TileEntity {
 
     public abstract void onAssemble(World world, List<BlockPos> blocks);
 
-    public abstract void onDissasemble(World world, List<BlockPos> blocks);
+    public abstract void onDisassemble(World world, List<BlockPos> blocks);
 
 }

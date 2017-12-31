@@ -1,5 +1,6 @@
 package com.elytradev.betterboilers.tile;
 
+import com.elytradev.betterboilers.BBLog;
 import com.elytradev.betterboilers.util.FluidAccess;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -8,16 +9,17 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import javax.annotation.Nullable;
 
 public class TileEntityBoilerVent extends TileEntityBoilerPart implements IBoilerPart{
-    private TileEntityController controller;
+    private TileEntityBoilerController controller;
 
     @Override
     @Nullable
-    public TileEntityController getController() {
+    public TileEntityBoilerController getController() {
         return this.controller;
     }
 
     @Override
-    public void setController(TileEntityController controller) {
+    public void setController(TileEntityBoilerController controller) {
+        BBLog.info("added vent");
         this.controller = controller;
     }
 

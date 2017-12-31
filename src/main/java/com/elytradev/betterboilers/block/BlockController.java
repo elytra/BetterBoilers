@@ -1,7 +1,7 @@
 package com.elytradev.betterboilers.block;
 
 import com.elytradev.betterboilers.BetterBoilers;
-import com.elytradev.betterboilers.tile.TileEntityController;
+import com.elytradev.betterboilers.tile.TileEntityBoilerController;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -12,7 +12,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockController extends BlockTileEntity<TileEntityController> implements IBoilerBlock {
+public class BlockController extends BlockTileEntity<TileEntityBoilerController> implements IBoilerBlock {
 
     protected String name;
     public static PropertyBool ACTIVE = PropertyBool.create("active");
@@ -47,12 +47,12 @@ public class BlockController extends BlockTileEntity<TileEntityController> imple
     }
 
     @Override
-    public Class<TileEntityController> getTileEntityClass() {
-        return TileEntityController.class;
+    public Class<TileEntityBoilerController> getTileEntityClass() {
+        return TileEntityBoilerController.class;
     }
 
     @Override
-    public TileEntityController createTileEntity(World world, IBlockState state) {
-        return new TileEntityController();
+    public TileEntityBoilerController createTileEntity(World world, IBlockState state) {
+        return new TileEntityBoilerController();
     }
 }

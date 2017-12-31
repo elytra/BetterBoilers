@@ -1,7 +1,7 @@
 package com.elytradev.betterboilers;
 
 import com.elytradev.betterboilers.container.BoilerContainer;
-import com.elytradev.betterboilers.tile.TileEntityController;
+import com.elytradev.betterboilers.tile.TileEntityBoilerController;
 import com.elytradev.concrete.inventory.IContainerInventoryHolder;
 import com.elytradev.concrete.inventory.gui.client.ConcreteGui;
 import com.elytradev.betterboilers.block.ModBlocks;
@@ -67,7 +67,7 @@ public class BetterBoilers {
                     case BOILER:
                         return new BoilerContainer(
                                 player.inventory, ((IContainerInventoryHolder)world.getTileEntity(new BlockPos(x,y,z))).getContainerInventory(),
-                                (TileEntityController)world.getTileEntity(new BlockPos(x,y,z)));
+                                (TileEntityBoilerController)world.getTileEntity(new BlockPos(x,y,z)));
 
                     default:
                         return null;
@@ -83,7 +83,7 @@ public class BetterBoilers {
                     case BOILER:
                         BoilerContainer boilerContainer = new BoilerContainer(
                                 player.inventory, ((IContainerInventoryHolder)world.getTileEntity(new BlockPos(x,y,z))).getContainerInventory(),
-                                (TileEntityController)world.getTileEntity(new BlockPos(x,y,z)));
+                                (TileEntityBoilerController)world.getTileEntity(new BlockPos(x,y,z)));
                         return new ConcreteGui(boilerContainer);
                     default:
                         return null;

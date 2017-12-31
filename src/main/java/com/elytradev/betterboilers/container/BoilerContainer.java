@@ -1,5 +1,6 @@
 package com.elytradev.betterboilers.container;
 
+import com.elytradev.betterboilers.tile.TileEntityBoilerController;
 import com.elytradev.concrete.inventory.gui.ConcreteContainer;
 import com.elytradev.concrete.inventory.gui.widget.WBar;
 import com.elytradev.concrete.inventory.gui.widget.WFluidBar;
@@ -7,7 +8,6 @@ import com.elytradev.concrete.inventory.gui.widget.WItemSlot;
 import com.elytradev.concrete.inventory.gui.widget.WPanel;
 import com.elytradev.concrete.inventory.gui.widget.WPlainPanel;
 import com.elytradev.betterboilers.BetterBoilers;
-import com.elytradev.betterboilers.tile.TileEntityController;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 
@@ -22,7 +22,7 @@ public class BoilerContainer extends ConcreteContainer {
     private ResourceLocation arrowBG = new ResourceLocation(BetterBoilers.modId,"textures/gui/arrow_bg.png");
     private ResourceLocation arrowFG = new ResourceLocation(BetterBoilers.modId,"textures/gui/arrow_fg.png");
 
-    public BoilerContainer(IInventory player, IInventory container, TileEntityController boiler) {
+    public BoilerContainer(IInventory player, IInventory container, TileEntityBoilerController boiler) {
         super(player, container);
         WPlainPanel panel = new WPlainPanel();
         setRootPanel(panel);

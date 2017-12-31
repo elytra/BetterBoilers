@@ -1,6 +1,5 @@
 package com.elytradev.betterboilers.tile;
 
-import com.elytradev.betterboilers.block.BlockController;
 import com.elytradev.betterboilers.block.IBoilerBlock;
 import com.elytradev.betterboilers.block.ModBlocks;
 import com.elytradev.concrete.inventory.*;
@@ -16,7 +15,6 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
@@ -26,16 +24,12 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.BiPredicate;
 
-public class TileEntityController extends TileEntityControllerBase implements ITickable, IContainerInventoryHolder, IBoilerPart {
+public class TileEntityBoilerController extends TileEntityControllerBase implements ITickable, IContainerInventoryHolder, IBoilerPart {
 
     private int totalScanned = 0;
-    private String status;
     public ConcreteFluidTank tankWater;
     public ConcreteFluidTank tankSteam;
     public ConcreteItemStorage inv;
@@ -51,14 +45,14 @@ public class TileEntityController extends TileEntityControllerBase implements IT
 
     protected int getMaxBlocksPerMultiblock() { return 1000; }
 
-    public TileEntityController getController() {
+    public TileEntityBoilerController getController() {
         return this;
     }
 
-    public void setController(TileEntityController controller) {
+    public void setController(TileEntityBoilerController controller) {
     }
 
-    public TileEntityController() {
+    public TileEntityBoilerController() {
         this.inv = new ConcreteItemStorage(3).withValidators(Validators.FURNACE_FUELS,
                 Validators.FURNACE_FUELS,
                 Validators.FURNACE_FUELS)
@@ -101,7 +95,7 @@ public class TileEntityController extends TileEntityControllerBase implements IT
         }
 
         for (BlockPos pos : blocks) {
-            if (world.getBlockState(pos).getBlock() == ModBlocks.CONTROLLER) {
+            if (world.getTileEntity(pos) instanceof TileEntityControllerBase) {
                 if (pos != this.getPos()) {
                     status = "msg.bb.tooManyControllers";
                     return false;
@@ -139,21 +133,21 @@ public class TileEntityController extends TileEntityControllerBase implements IT
                 boilerBlockCount++;
             }
             if (world.getBlockState(pos).getBlock() == ModBlocks.FIREBOX
-                    || world.getBlockState(pos).getBlock() == ModBlocks.HATCH) {
+                    || world.getBlockState(pos).getBlock() == ModBlocks.HATCH
+                    || world.getBlockState(pos).getBlock() == ModBlocks.CONTROLLER) {
                 fireboxBlockCount++;
             }
-        }
-        TileEntity te = world.getTileEntity(pos);
-        if (te != null && te instanceof TileEntityBoilerPart) {
-            ((TileEntityBoilerPart)te).setController(this);
+            TileEntity te = world.getTileEntity(pos);
+            if (te != null && te instanceof TileEntityBoilerPart) {
+                ((TileEntityBoilerPart)te).setController(this);
+            }
         }
         tankWater.setCapacity(1000*boilerBlockCount);
         tankSteam.setCapacity(500*boilerBlockCount);
-        setControllerStatus(ControllerStatus.ACTIVE, "msg.bb.noIssue");
     }
 
     @Override
-    public void onDissasemble(World world, List<BlockPos> blocks) {
+    public void onDisassemble(World world, List<BlockPos> blocks) {
         for (BlockPos pos : blocks) {
             TileEntity te = world.getTileEntity(pos);
             if (te instanceof TileEntityBoilerPart) {

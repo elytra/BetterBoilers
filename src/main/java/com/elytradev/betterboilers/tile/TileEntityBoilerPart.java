@@ -4,14 +4,13 @@ import com.elytradev.betterboilers.BBLog;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public abstract class TileEntityBoilerPart extends TileEntity {
-    private TileEntityController controller;
+    private TileEntityBoilerController controller;
     private Vec3i controllerPos;
 
     @Override
@@ -40,14 +39,14 @@ public abstract class TileEntityBoilerPart extends TileEntity {
         return getController() != null;
     }
 
-    public TileEntityController getController() {
+    public TileEntityBoilerController getController() {
         if (!hasWorld()) return null;
         if (controller != null && controller.isInvalid()) controller = null;
         if (controller == null && controllerPos != null) {
             BlockPos pos = getPos().add(controllerPos);
             TileEntity te = getWorld().getTileEntity(pos);
-            if (te instanceof TileEntityController) {
-                controller = (TileEntityController)te;
+            if (te instanceof TileEntityBoilerController) {
+                controller = (TileEntityBoilerController)te;
             } else {
                 controllerPos = null;
                 BBLog.debug("The network member at {}, {}, {} failed to find its controller", getPos().getX(), getPos().getY(), getPos().getZ());
@@ -55,7 +54,7 @@ public abstract class TileEntityBoilerPart extends TileEntity {
         }
         return controller;
     }
-    public void setController(TileEntityController controller) {
+    public void setController(TileEntityBoilerController controller) {
         if (!hasWorld()) return;
         if (controller == null) {
             controllerPos = null;
