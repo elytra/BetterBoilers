@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -55,6 +56,7 @@ public class BetterBoilers {
     public void preInit(FMLPreInitializationEvent event) {
         BBLog.info("oooh, steamy! " + name + " is loading!");
         MinecraftForge.EVENT_BUS.register(BBRecipes.class);
+        Configuration config = new Configuration(event.getSuggestedConfigurationFile());
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new IGuiHandler() {
             public static final int BOILER = 0;
 

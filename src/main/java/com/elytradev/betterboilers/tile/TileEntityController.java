@@ -32,10 +32,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.BiPredicate;
 
-public class TileEntityController extends TileEntity implements ITickable, IContainerInventoryHolder, IBoilerPart {
+public class TileEntityController extends TileEntityControllerBase implements ITickable, IContainerInventoryHolder, IBoilerPart {
 
     private int totalScanned = 0;
-    public TextComponentTranslation errorReason;
+    private String status;
     public ConcreteFluidTank tankWater;
     public ConcreteFluidTank tankSteam;
     public ConcreteItemStorage inv;
@@ -49,7 +49,7 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
     private int[] currentFuelTime = new int[3];
     private int[] maxFuelTime = new int[3];
 
-    private static final int MAXIMUM_BLOCKS_PER_MULTIBLOCK = 1000;
+    protected int getMaxBlocksPerMultiblock() { return 1000; }
 
     public TileEntityController getController() {
         return this;
@@ -71,8 +71,8 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
 
     public void update() {
         if (currentScanTime >= RESCAN_TIME) {
-            BiPredicate<World, BlockPos> predicate = (world,pos)->world.getBlockState(pos).getBlock() instanceof IBoilerBlock;
-            scanNetwork(predicate);
+            BiPredicate<World, BlockPos> members = (world,pos)->world.getBlockState(pos).getBlock() instanceof IBoilerBlock;
+            scanNetwork(members, this::isValid);
             currentScanTime = 0;
         }
         currentScanTime++;
@@ -92,91 +92,74 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
         }
     }
 
-    public void scanNetwork(BiPredicate<World, BlockPos> predicate) {
-        if (!hasWorld()) return;
-        if (world.isRemote) return;
-        Set<BlockPos> seen = new HashSet<>();
-        List<BlockPos> members = new ArrayList<>();
-        List<BlockPos> queue = new ArrayList<>();
-        queue.add(getPos());
-		/*//This code used to wipe existing registrations so that an orphaned valve doesn't continue to claim this controller
-		for (BlockPos pos : networkMemberLocations) {
-			TileEntity te = world.getTileEntity(pos);
-			if (te instanceof TileEntityBoilerPart) {
-				((TileEntityBoilerPart)te).setController(null);
-			}
-		}*/
-
-        int totalScanned = 0;
-        boilerBlockCount = 0;
-        fireboxBlockCount = 0;
-
-        int itr = 0;
-        while (!queue.isEmpty()) {
-            if (itr > MAXIMUM_BLOCKS_PER_MULTIBLOCK) {
-                setControllerStatus(true, "msg.bb.tooBig");
-                return;
-            }
-            BlockPos pos = queue.remove(0);
-            seen.add(pos);
-            if (predicate.test(world, pos)) {
-                //TODO: Replace with generalized neighbor function?
-                for (EnumFacing ef : EnumFacing.VALUES) {
-                    BlockPos p = pos.offset(ef);
-                    if (seen.contains(p)) continue;
-                    seen.add(p);
-                    queue.add(p);
-                }
-
-                if (!members.contains(pos)) {
-                    //TODO: This is where we would do early checks, like "is this another controller?" or "is this malformed?"
-                    //(world,pos)->world.getBlock(pos) instanceof IBoilerBlock
-                    members.add(pos);
-                }
-            }
-            itr++;
-        }
-
+    public boolean isValid(World world, List<BlockPos> blocks) {
         int minY = 255;
-        for(BlockPos pos : members) minY = Math.min(pos.getY(), minY);
+        for(BlockPos pos : blocks) minY = Math.min(pos.getY(), minY);
         if (this.pos.getY() != minY) {
-            setControllerStatus(true, "msg.bb.badController");
-            return;
+            status = "msg.bb.badController";
+            return false;
         }
 
-        for (BlockPos pos : members) {
-            TileEntity te = world.getTileEntity(pos);
-            if(world.getBlockState(pos).getBlock()==ModBlocks.CONTROLLER) {
+        for (BlockPos pos : blocks) {
+            if (world.getBlockState(pos).getBlock() == ModBlocks.CONTROLLER) {
                 if (pos != this.getPos()) {
-                    setControllerStatus(true, "msg.bb.tooManyControllers");
-                    return;
+                    status = "msg.bb.tooManyControllers";
+                    return false;
                 }
             }
-            if(world.getBlockState(pos).getBlock()==ModBlocks.BOILER
-                    || world.getBlockState(pos).getBlock()== ModBlocks.VENT
-                    || world.getBlockState(pos).getBlock()==ModBlocks.VALVE) {
+            if (world.getBlockState(pos).getBlock() == ModBlocks.BOILER
+                    || world.getBlockState(pos).getBlock() == ModBlocks.VENT
+                    || world.getBlockState(pos).getBlock() == ModBlocks.VALVE) {
                 boilerBlockCount++;
                 if (pos.getY() == minY) {
-                    setControllerStatus(true, "msg.bb.badBoiler");
-                    return;
+                    status = "msg.bb.badBoiler";
+                    return false;
                 }
             }
-            if(world.getBlockState(pos).getBlock()==ModBlocks.FIREBOX
-                    || world.getBlockState(pos).getBlock()== ModBlocks.HATCH) {
+            if (world.getBlockState(pos).getBlock() == ModBlocks.FIREBOX
+                    || world.getBlockState(pos).getBlock() == ModBlocks.HATCH) {
                 fireboxBlockCount++;
                 if (pos.getY() != minY) {
-                    setControllerStatus(true, "msg.bb.badFirebox");
-                    return;
+                    status = "msg.bb.badFirebox";
+                    return false;
                 }
             }
-            if (te != null && te instanceof TileEntityBoilerPart) {
-                ((TileEntityBoilerPart)te).setController(this);
+        }
+        return true;
+    }
+
+    @Override
+    public void onAssemble(World world, List<BlockPos> blocks) {
+        boilerBlockCount = 0;
+        fireboxBlockCount = 0;
+        for (BlockPos pos : blocks) {
+            if (world.getBlockState(pos).getBlock() == ModBlocks.BOILER
+                    || world.getBlockState(pos).getBlock() == ModBlocks.VENT
+                    || world.getBlockState(pos).getBlock() == ModBlocks.VALVE) {
+                boilerBlockCount++;
+            }
+            if (world.getBlockState(pos).getBlock() == ModBlocks.FIREBOX
+                    || world.getBlockState(pos).getBlock() == ModBlocks.HATCH) {
+                fireboxBlockCount++;
             }
         }
-        totalScanned = itr;
-        setControllerStatus(false, "msg.bb.noIssue");
+        TileEntity te = world.getTileEntity(pos);
+        if (te != null && te instanceof TileEntityBoilerPart) {
+            ((TileEntityBoilerPart)te).setController(this);
+        }
         tankWater.setCapacity(1000*boilerBlockCount);
         tankSteam.setCapacity(500*boilerBlockCount);
+        setControllerStatus(ControllerStatus.ACTIVE, "msg.bb.noIssue");
+    }
+
+    @Override
+    public void onDissasemble(World world, List<BlockPos> blocks) {
+        for (BlockPos pos : blocks) {
+            TileEntity te = world.getTileEntity(pos);
+            if (te instanceof TileEntityBoilerPart) {
+                ((TileEntityBoilerPart) te).setController(null);
+            }
+        }
     }
 
     @Override
@@ -278,15 +261,6 @@ public class TileEntityController extends TileEntity implements ITickable, ICont
                     .withField(6, () -> currentFuelTime[2])
                     .withField(7, () -> maxFuelTime[2]);
 
-        }
-    }
-
-    public void setControllerStatus(boolean isError, String status) {
-        errorReason = new TextComponentTranslation(status);
-        if (isError) {
-            world.setBlockState(this.getPos(), ModBlocks.CONTROLLER.getDefaultState().withProperty(BlockController.ACTIVE, false));
-        } else {
-            world.setBlockState(this.getPos(), ModBlocks.CONTROLLER.getDefaultState().withProperty(BlockController.ACTIVE, true));
         }
     }
 
