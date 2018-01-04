@@ -28,9 +28,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.BiPredicate;
 
-public class TileEntityBoilerController extends TileEntityControllerBase implements ITickable, IContainerInventoryHolder, IBoilerPart {
+public class TileEntityBoilerController extends TileEntityMultiblockController implements ITickable, IContainerInventoryHolder, IBoilerPart {
 
-    private int totalScanned = 0;
     public ConcreteFluidTank tankWater;
     public ConcreteFluidTank tankSteam;
     public ConcreteItemStorage inv;
@@ -96,7 +95,7 @@ public class TileEntityBoilerController extends TileEntityControllerBase impleme
         }
 
         for (BlockPos pos : blocks) {
-            if (world.getTileEntity(pos) instanceof TileEntityControllerBase) {
+            if (world.getTileEntity(pos) instanceof TileEntityMultiblockController) {
                 if (pos != this.getPos()) {
                     status = "msg.bb.tooManyControllers";
                     return false;

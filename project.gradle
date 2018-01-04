@@ -5,9 +5,9 @@ ext {
 	projectName = 'BetterBoilers'
 
 	useElytraVersionFormat = true
-	version = '1'
+	version = '1.1'
 
-	concreteVersion = '0.3.4-SNAPSHOT'
+	concreteVersion = '0.3.6-SNAPSHOT'
 	concreteModules = [ 'common', 'inventory', 'recipe' ]
 
 	coremod = null

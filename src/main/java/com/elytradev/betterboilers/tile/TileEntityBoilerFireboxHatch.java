@@ -7,7 +7,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityFireboxHatch extends TileEntityBoilerPart implements IBoilerPart{
+public class TileEntityBoilerFireboxHatch extends TileEntityBoilerPart implements IBoilerPart{
     private TileEntityBoilerController controller;
 
     @Override

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.BiPredicate;
 
-public abstract class TileEntityControllerBase extends TileEntity {
+public abstract class TileEntityMultiblockController extends TileEntity {
 
     protected int getMaxBlocksPerMultiblock() { return BBConfig.defaultMaxMultiblock; }
     protected String status;
@@ -30,7 +30,6 @@ public abstract class TileEntityControllerBase extends TileEntity {
         List<BlockPos> queue = new ArrayList<>();
         queue.add(getPos());
 
-        int totalScanned = 0;
         onDisassemble(world, members);
 
         int itr = 0;
@@ -65,7 +64,6 @@ public abstract class TileEntityControllerBase extends TileEntity {
         }
 
         onAssemble(world, members);
-        totalScanned = itr;
         setControllerStatus(TileEntityBoilerController.ControllerStatus.ACTIVE, "msg.bb.noIssue");
     }
 

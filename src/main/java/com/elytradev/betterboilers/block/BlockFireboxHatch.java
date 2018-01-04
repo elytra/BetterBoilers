@@ -1,12 +1,12 @@
 package com.elytradev.betterboilers.block;
 
 import com.elytradev.betterboilers.BetterBoilers;
-import com.elytradev.betterboilers.tile.TileEntityFireboxHatch;
+import com.elytradev.betterboilers.tile.TileEntityBoilerFireboxHatch;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.World;
 
-public class BlockFireboxHatch extends BlockTileEntity<TileEntityFireboxHatch> implements IBoilerBlock {
+public class BlockFireboxHatch extends BlockTileEntity<TileEntityBoilerFireboxHatch> implements IBoilerBlock {
 
     protected String name;
 
@@ -17,12 +17,12 @@ public class BlockFireboxHatch extends BlockTileEntity<TileEntityFireboxHatch> i
     }
 
     @Override
-    public Class<TileEntityFireboxHatch> getTileEntityClass() {
-        return TileEntityFireboxHatch.class;
+    public Class<TileEntityBoilerFireboxHatch> getTileEntityClass() {
+        return TileEntityBoilerFireboxHatch.class;
     }
 
     @Override
-    public TileEntityFireboxHatch createTileEntity(World world, IBlockState state) {
-        return new TileEntityFireboxHatch();
+    public TileEntityBoilerFireboxHatch createTileEntity(World world, IBlockState state) {
+        return new TileEntityBoilerFireboxHatch();
     }
 }
