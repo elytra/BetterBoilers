@@ -35,6 +35,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
     public ConcreteItemStorage inv;
     private int boilerBlockCount = 0;
     private int fireboxBlockCount = 0;
+    private int pumpCount = 0;
     private static final int RESCAN_TIME = 100;
     private int currentScanTime = 100;
 
@@ -42,6 +43,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
     private static final int PROCESS_LENGTH = BBConfig.ticksToBoil;
     private int[] currentFuelTime = new int[3];
     private int[] maxFuelTime = new int[3];
+    private int fuelThisTick = 0;
 
     protected int getMaxBlocksPerMultiblock() { return BBConfig.defaultMaxMultiblock; }
 
@@ -72,16 +74,27 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
         currentScanTime++;
 
         if (!world.isRemote) {
-            if (canProcessFluid()) {
-                if (consumeFuel(0)) currentProcessTime += fireboxBlockCount;
-                if (consumeFuel(1)) currentProcessTime += fireboxBlockCount;
-                if (consumeFuel(2)) currentProcessTime += fireboxBlockCount;
-                if (tankWater.getFluidAmount() == 0) currentProcessTime = 0;
-                if (currentProcessTime >= PROCESS_LENGTH) {
-                    tankWater.drain(2*BBConfig.steamPerBoil, true);
-                    tankSteam.fill(new FluidStack(ModBlocks.FLUID_STEAM, BBConfig.steamPerBoil), true);
-                    currentProcessTime = 0;
+            if (pumpCount == 0) {
+                if (canProcessFluid()) {
+                    if (consumeFuel(0)) currentProcessTime += fireboxBlockCount;
+                    if (consumeFuel(1)) currentProcessTime += fireboxBlockCount;
+                    if (consumeFuel(2)) currentProcessTime += fireboxBlockCount;
+                    if (tankWater.getFluidAmount() == 0) currentProcessTime = 0;
+                    if (currentProcessTime >= PROCESS_LENGTH) {
+                        tankWater.drain(2 * BBConfig.steamPerBoil, true);
+                        tankSteam.fill(new FluidStack(ModBlocks.FLUID_STEAM, BBConfig.steamPerBoil), true);
+                        currentProcessTime = 0;
+                    }
                 }
+            } else {
+                if (canPumpFluid())
+                fuelThisTick = 0;
+                if (consumeFuel(0)) fuelThisTick++;
+                if (consumeFuel(1)) fuelThisTick++;
+                if (consumeFuel(2)) fuelThisTick++;
+                int toProcess = (int)Math.ceil((fireboxBlockCount * fuelThisTick * pumpCount)*BBConfig.pumpMultiplier); //WHY THE FUCK DOES MATH.CEIL RETURN A DOUBLE WHAT THE ACTUAL FUCK
+                tankWater.drain(2 * toProcess, true);
+                tankSteam.fill(new FluidStack(ModBlocks.FLUID_STEAM, toProcess), true);
             }
         }
     }
@@ -103,7 +116,8 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
             }
             if (world.getBlockState(pos).getBlock() == ModBlocks.BOILER
                     || world.getBlockState(pos).getBlock() == ModBlocks.VENT
-                    || world.getBlockState(pos).getBlock() == ModBlocks.VALVE) {
+                    || world.getBlockState(pos).getBlock() == ModBlocks.VALVE
+                    || world.getBlockState(pos).getBlock() == ModBlocks.PUMP) {
                 boilerBlockCount++;
                 if (pos.getY() == minY) {
                     status = "msg.bb.badBoiler";
@@ -119,6 +133,10 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
                 }
             }
         }
+        if (boilerBlockCount + fireboxBlockCount < BBConfig.defaultMinMultiblock) {
+            status = "msg.bb.tooSmall";
+            return false;
+        }
         return true;
     }
 
@@ -126,6 +144,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
     public void onAssemble(World world, List<BlockPos> blocks) {
         boilerBlockCount = 0;
         fireboxBlockCount = 0;
+        pumpCount = 0;
         for (BlockPos pos : blocks) {
             if (world.getBlockState(pos).getBlock() == ModBlocks.BOILER
                     || world.getBlockState(pos).getBlock() == ModBlocks.VENT
@@ -136,6 +155,10 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
                     || world.getBlockState(pos).getBlock() == ModBlocks.HATCH
                     || world.getBlockState(pos).getBlock() == ModBlocks.CONTROLLER) {
                 fireboxBlockCount++;
+            }
+            if (world.getBlockState(pos).getBlock() == ModBlocks.PUMP) {
+                boilerBlockCount++;
+                pumpCount++;
             }
             TileEntity te = world.getTileEntity(pos);
             if (te != null && te instanceof TileEntityBoilerPart) {
@@ -219,9 +242,17 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
     }
 
     private boolean canProcessFluid() {
-        FluidStack tankDrained = tankWater.drain(100, false);
-        int tankFilled = tankSteam.fill(new FluidStack(ModBlocks.FLUID_STEAM, 50), false);
-        return (tankDrained != null && tankFilled == 50);
+        FluidStack tankDrained = tankWater.drain(2*BBConfig.steamPerBoil, false);
+        int tankFilled = tankSteam.fill(new FluidStack(ModBlocks.FLUID_STEAM, BBConfig.steamPerBoil), false);
+        return (tankDrained != null && tankFilled == BBConfig.steamPerBoil);
+    }
+
+    private boolean canPumpFluid() {
+        // for when there are pump blocks present
+        int toProcess = (int)Math.ceil((fireboxBlockCount * 3 * pumpCount)*.5); // mult by 3 for max number of active fuel sources at a time
+        FluidStack tankDrained = tankWater.drain(2*toProcess, false);
+        int tankFilled = tankSteam.fill(new FluidStack(ModBlocks.FLUID_STEAM, toProcess), false);
+        return (tankDrained != null && tankFilled == toProcess);
     }
 
     private boolean consumeFuel(int slot) {

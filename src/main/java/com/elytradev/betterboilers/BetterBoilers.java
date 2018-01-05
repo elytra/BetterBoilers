@@ -39,6 +39,7 @@ public class BetterBoilers {
     public static final String modId = "betterboilers";
     public static final String name  = "Better Boilers";
     public static final String version = "@VERSION@";
+    public static BBConfig config;
 
     @Mod.Instance(modId)
     public static BetterBoilers instance;
@@ -57,9 +58,7 @@ public class BetterBoilers {
     public void preInit(FMLPreInitializationEvent event) {
         BBLog.info("oooh, steamy! " + name + " is loading!");
         MinecraftForge.EVENT_BUS.register(BBRecipes.class);
-        BBConfig.setConfig(new Configuration(event.getSuggestedConfigurationFile()));
-        BBConfig.load();
-        BBConfig.save();
+        config = BBConfig.createConfig(event);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new IGuiHandler() {
             public static final int BOILER = 0;

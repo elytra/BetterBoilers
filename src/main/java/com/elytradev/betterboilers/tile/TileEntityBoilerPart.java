@@ -9,7 +9,7 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public abstract class TileEntityBoilerPart extends TileEntity implements IMultiblockPart {
+public abstract class TileEntityBoilerPart extends TileEntity {
     private TileEntityBoilerController controller;
     private Vec3i controllerPos;
 
@@ -55,7 +55,6 @@ public abstract class TileEntityBoilerPart extends TileEntity implements IMultib
         return controller;
     }
 
-    @Override
     public void setController(TileEntityBoilerController controller) {
         if (!hasWorld()) return;
         if (controller == null) {

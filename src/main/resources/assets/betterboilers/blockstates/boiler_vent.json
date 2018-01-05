@@ -6,6 +6,20 @@
 		}
 	},
 	"variants": {
+		"is_brass": {
+			"true": {
+				"model": "minecraft:cube_all",
+				"textures": {
+					"all": "betterboilers:blocks/boiler-out"
+				}
+			},
+			"false": {
+				"model": "minecraft:cube_all",
+				"textures": {
+					"all": "betterboilers:blocks/boiler-con-out"
+				}
+			}
+		},
 		"normal": {
 			"model": "cube_all"
 		},

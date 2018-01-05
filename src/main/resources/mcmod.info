@@ -1,16 +1,17 @@
 [
   {
     "modid": "betterboilers",
-    "name": "BetterBoilers",
+    "name": "Better Boilers",
     "description": "Multiblock boilers and more!",
     "version": "${version}",
     "mcversion": "${mcversion}",
     "url": "",
     "updateUrl": "",
     "authorList": [
-      "b0undarybreaker"
+      "b0undarybreaker",
+      "Falkreon"
     ],
-    "credits": "",
+    "credits": "MR_Hazard and the Immersive Engineering team (base boiler block texture)",
     "logoFile": "",
     "screenshots": [],
     "dependencies": []

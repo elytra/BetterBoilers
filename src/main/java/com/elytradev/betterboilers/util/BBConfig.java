@@ -1,61 +1,45 @@
 package com.elytradev.betterboilers.util;
 
+import com.elytradev.betterboilers.BetterBoilers;
 import net.minecraftforge.common.config.Configuration;
+import com.elytradev.concrete.config.ConcreteConfig;
+import com.elytradev.concrete.config.ConfigValue;
+import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-public class BBConfig {
+import java.io.File;
 
-    private static Configuration config;
+public class BBConfig extends ConcreteConfig {
 
-    public static int ticksToBoil;
-    public static int steamPerBoil;
+    public File configFolder;
 
-    public static int defaultMaxMultiblock;
-    public static int defaultMinMultiblock;
+    @ConfigValue(type = Property.Type.INTEGER, category = "BoilerUsage", comment = "The amount of ticks needed for one boiler cycle, sans calculation. Actual value will be 200/(<number of firebox blocks> * <number of active fuel sources>.")
+    public static int ticksToBoil = 200;
+    @ConfigValue(type = Property.Type.INTEGER, category = "BoilerUsage", comment = "The amount of steam produced per boiler cycle. Water cost will always be 2x the resulting steam.")
+    public static int steamPerBoil = 50;
+    @ConfigValue(type = Property.Type.DOUBLE, category = "BoilerUsage", comment = "The multiplier for how much steam is produced per tick with a pump. Steam production calculated by (<number of firebox blocks> * <number of active fuel sources> * <number of pumps>) / <this multiplier>. Try to calculate to have half the rate of a normal steam boiler.")
+    public static double pumpMultiplier = .5;
 
-    private static final ConfigKey<Integer> TICKS_TO_BOIL = ConfigKey.create(
-            "BoilerUsage", "ticksToBoil", 200,
+    @ConfigValue(type = Property.Type.INTEGER, category = "Multiblock", comment = "The maximum amount of blocks that can be added to a standard multiblock. Some controllers may have different maxima. Includes all of the multiblock's components.")
+    public static int defaultMaxMultiblock = 1000;
+    @ConfigValue(type = Property.Type.INTEGER, category = "Multiblock", comment = "The minimum amount of blocks that can be added to a standard multiblock. Some controllers may have different minima. Includes all of the multiblock's components. Set to 0 for no minimum.")
+    public static int defaultMinMultiblock = 36;
 
-            "The amount of ticks needed for one boiler cycle.");
-    private static final ConfigKey<Integer> STEAM_PER_BOIL = ConfigKey.create(
-            "BoilerUsage", "steamPerBoil", 50,
-
-            "The amount of steam produced per boiler cycle.",
-            "Water cost will always be 2x the resulting steam.");
-
-
-    private static final ConfigKey<Integer> DEFAULT_MAX_MULTIBLOCK = ConfigKey.create(
-            "BoilerMultiblock", "defaultMaxMultiblock", 1000,
-
-            "The maximumamount of blocks that can be added to a standard boiler multiblock.",
-            "Some controllers may have different maxima.",
-            "Includes fireboxes, boiler blocks, and all components.");
-    private static final ConfigKey<Integer> DEFAULT_MIN_MULTIBLOCK = ConfigKey.create(
-            "BoilerMultiblock", "defaultMinMultiblock", 36,
-
-            "The minimum amount of blocks that can be added to a standard boiler multiblock.",
-            "Some controllers may have different minima, or no minima at all.",
-            "Includes fireboxes, boiler blocks, and all components.");
-    public static void setConfig(Configuration config) {
-        BBConfig.config = config;
+    private BBConfig(File configFile) {
+        super(configFile, BetterBoilers.modId);
+        this.configFolder = configFile.getParentFile();
     }
 
-    public static void load() {
-        config.load();
+    public static BBConfig createConfig(FMLPreInitializationEvent e) {
+        //Move config file if it exists.
+        File bbFolder = new File(e.getModConfigurationDirectory(), "betterboilers");
+        bbFolder.mkdirs();
+        if (e.getSuggestedConfigurationFile().exists()) {
+            e.getSuggestedConfigurationFile().renameTo(new File(bbFolder, "betterboilers.cfg"));
+        }
 
-        ticksToBoil = TICKS_TO_BOIL.get(config);
-        steamPerBoil = STEAM_PER_BOIL.get(config);
-
-        defaultMaxMultiblock = DEFAULT_MAX_MULTIBLOCK.get(config);
-        defaultMinMultiblock = DEFAULT_MIN_MULTIBLOCK.get(config);
-    }
-
-    public static void save() {
-        TICKS_TO_BOIL.set(config, ticksToBoil);
-        STEAM_PER_BOIL.set(config, steamPerBoil);
-
-        DEFAULT_MAX_MULTIBLOCK.set(config, defaultMaxMultiblock);
-        DEFAULT_MIN_MULTIBLOCK.set(config, defaultMinMultiblock);
-
-        config.save();
+        BBConfig config = new BBConfig(new File(bbFolder, "betterboilers.cfg"));
+        config.loadConfig();
+        return config;
     }
 }
