@@ -1,5 +1,6 @@
 package com.elytradev.betterboilers.tile;
 
+import com.elytradev.betterboilers.BBLog;
 import com.elytradev.betterboilers.block.IBoilerBlock;
 import com.elytradev.betterboilers.block.ModBlocks;
 import com.elytradev.betterboilers.util.BBConfig;
@@ -35,7 +36,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
     public ConcreteItemStorage inv;
     private int boilerBlockCount = 0;
     private int fireboxBlockCount = 0;
-    private int pumpCount = 0;
+    public int pumpCount = 0;
     private static final int RESCAN_TIME = 100;
     private int currentScanTime = 100;
 
@@ -92,7 +93,8 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
                 if (consumeFuel(0)) fuelThisTick++;
                 if (consumeFuel(1)) fuelThisTick++;
                 if (consumeFuel(2)) fuelThisTick++;
-                int toProcess = (int)Math.ceil((fireboxBlockCount * fuelThisTick * pumpCount)*BBConfig.pumpMultiplier); //WHY THE FUCK DOES MATH.CEIL RETURN A DOUBLE WHAT THE ACTUAL FUCK
+                double fuelPerTick = (double)BBConfig.steamPerBoil/(double)BBConfig.ticksToBoil;
+                int toProcess = (int)Math.ceil(fireboxBlockCount * fuelThisTick * fuelPerTick * BBConfig.pumpMultiplier); //WHY THE FUCK DOES MATH.CEIL RETURN A DOUBLE WHAT THE ACTUAL FUCK
                 tankWater.drain(2 * toProcess, true);
                 tankSteam.fill(new FluidStack(ModBlocks.FLUID_STEAM, toProcess), true);
             }

@@ -45,6 +45,6 @@ public class BoilerContainer extends ConcreteContainer {
         panel.add(fuelTicks0, 11, 46, 14, 14);
         panel.add(fuelTicks1, 29, 46, 14, 14);
         panel.add(fuelTicks2, 47, 46, 14, 14);
-        panel.add(progressTicks, 73, 37, 24, 17);
+        if (boiler.pumpCount == 0) {panel.add(progressTicks, 73, 37, 24, 17);}
     }
 }

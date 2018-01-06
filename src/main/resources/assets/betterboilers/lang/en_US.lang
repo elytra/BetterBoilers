@@ -1,18 +1,22 @@
 #items
-item.inspector.name=Boiler Inspector
+item.inspector.name=Inspector's Booklet
 
 #blocks
 fluid.steam=Steam
 tile.boiler.name=Boiler Block
 tile.boiler_valve.name=Boiler Valve
 tile.boiler_vent.name=Boiler Vent
+tile.boiler_pump.name=Boiler Pump
 tile.firebox.name=Firebox
 tile.firebox_hatch.name=Firebox Hatch
 tile.controller.name=Boiler Controller
 
 #tooltips
 tooltip.bb.inspector.0=What did you do this time?
-tooltip.bb.inspector.1=Sneak-use to check a boiler's status
+tooltip.bb.inspector.1=Sneak-use on a controller to check a boiler's status.
+#tooltip.bb.inspector.1=Use in the air to check the manual. (NYI)
+tooltip.bb.boiler_pump.0=Continuous steam production and auto-eject!
+tooltip.bb.boiler_pump.1=However, results in lower overall production rates.
 
 #messages
 msg.bb.tooBig=Multiblock too big. (default max size 1000)

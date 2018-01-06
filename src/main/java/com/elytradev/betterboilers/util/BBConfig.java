@@ -17,8 +17,10 @@ public class BBConfig extends ConcreteConfig {
     public static int ticksToBoil = 200;
     @ConfigValue(type = Property.Type.INTEGER, category = "BoilerUsage", comment = "The amount of steam produced per boiler cycle. Water cost will always be 2x the resulting steam.")
     public static int steamPerBoil = 50;
-    @ConfigValue(type = Property.Type.DOUBLE, category = "BoilerUsage", comment = "The multiplier for how much steam is produced per tick with a pump. Steam production calculated by (<number of firebox blocks> * <number of active fuel sources> * <number of pumps>) / <this multiplier>. Try to calculate to have half the rate of a normal steam boiler.")
-    public static double pumpMultiplier = .5;
+    @ConfigValue(type = Property.Type.DOUBLE, category = "BoilerUsage", comment = "The multiplier for how much steam is produced per tick with a pump. Steam production calculated by <number of firebox blocks> * <number of active fuel sources> * <standard steam/tick> * <this multiplier>.")
+    public static double pumpMultiplier = .75;
+    @ConfigValue(type = Property.Type.INTEGER, category = "BoilerUsage", comment = "How much steam a pump will auto-output a tick. Can still be extracted from faster with a machine.")
+    public static int pumpDrain = 50;
 
     @ConfigValue(type = Property.Type.INTEGER, category = "Multiblock", comment = "The maximum amount of blocks that can be added to a standard multiblock. Some controllers may have different maxima. Includes all of the multiblock's components.")
     public static int defaultMaxMultiblock = 1000;
@@ -30,12 +32,12 @@ public class BBConfig extends ConcreteConfig {
         this.configFolder = configFile.getParentFile();
     }
 
-    public static BBConfig createConfig(FMLPreInitializationEvent e) {
+    public static BBConfig createConfig(FMLPreInitializationEvent event) {
         //Move config file if it exists.
-        File bbFolder = new File(e.getModConfigurationDirectory(), "betterboilers");
+        File bbFolder = new File(event.getModConfigurationDirectory(), "betterboilers");
         bbFolder.mkdirs();
-        if (e.getSuggestedConfigurationFile().exists()) {
-            e.getSuggestedConfigurationFile().renameTo(new File(bbFolder, "betterboilers.cfg"));
+        if (event.getSuggestedConfigurationFile().exists()) {
+            event.getSuggestedConfigurationFile().renameTo(new File(bbFolder, "betterboilers.cfg"));
         }
 
         BBConfig config = new BBConfig(new File(bbFolder, "betterboilers.cfg"));
