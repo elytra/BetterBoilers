@@ -1,6 +1,7 @@
 package com.elytradev.betterboilers.block;
 
 import com.elytradev.betterboilers.BetterBoilers;
+import com.elytradev.betterboilers.tile.TileEntityBoilerBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -13,16 +14,26 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import static com.elytradev.betterboilers.block.ModBlocks.BOILER;
 
-public class BoilerBlock extends BlockBase implements IBoilerBlock {
+public class BlockBoiler extends BlockTileEntity<TileEntityBoilerBlock> implements IBoilerBlock {
 
     protected String name;
     public static PropertyBool IS_BRASS= PropertyBool.create("is_brass");
 
-    public BoilerBlock(Material material, String name) {
+    public BlockBoiler(Material material, String name) {
         super(material, name);
         this.setDefaultState(blockState.getBaseState().withProperty(IS_BRASS, true));
 
         setCreativeTab(BetterBoilers.creativeTab);
+    }
+
+    @Override
+    public Class<TileEntityBoilerBlock> getTileEntityClass() {
+        return TileEntityBoilerBlock.class;
+    }
+
+    @Override
+    public TileEntityBoilerBlock createTileEntity(World world, IBlockState state) {
+        return new TileEntityBoilerBlock();
     }
 
     @Override

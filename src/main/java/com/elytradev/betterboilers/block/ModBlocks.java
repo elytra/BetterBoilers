@@ -12,11 +12,11 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModBlocks {
 
-    public static final BoilerBlock BOILER = new BoilerBlock(Material.IRON, "boiler");
+    public static final BlockBoiler BOILER = new BlockBoiler(Material.IRON, "boiler");
     public static final BlockBoilerValve VALVE = new BlockBoilerValve();
     public static final BlockBoilerVent VENT = new BlockBoilerVent();
     public static final BlockBoilerPump PUMP = new BlockBoilerPump();
-    public static final FireboxBlock FIREBOX = new FireboxBlock(Material.ROCK, "firebox");
+    public static final BlockFirebox FIREBOX = new BlockFirebox(Material.ROCK, "firebox");
     public static final BlockFireboxHatch HATCH = new BlockFireboxHatch();
     public static final BlockController CONTROLLER = new BlockController();
 
@@ -43,9 +43,11 @@ public class ModBlocks {
         FLUID_STEAM.setBlock(steam);
         FluidRegistry.addBucketForFluid(ModBlocks.FLUID_STEAM);
 
+        GameRegistry.registerTileEntity(BOILER.getTileEntityClass(), BOILER.getRegistryName().toString());
         GameRegistry.registerTileEntity(VALVE.getTileEntityClass(), VALVE.getRegistryName().toString());
         GameRegistry.registerTileEntity(VENT.getTileEntityClass(), VENT.getRegistryName().toString());
         GameRegistry.registerTileEntity(PUMP.getTileEntityClass(), PUMP.getRegistryName().toString());
+        GameRegistry.registerTileEntity(FIREBOX.getTileEntityClass(), FIREBOX.getRegistryName().toString());
         GameRegistry.registerTileEntity(HATCH.getTileEntityClass(), HATCH.getRegistryName().toString());
         GameRegistry.registerTileEntity(CONTROLLER.getTileEntityClass(), CONTROLLER.getRegistryName().toString());
 

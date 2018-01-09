@@ -1,6 +1,7 @@
 package com.elytradev.betterboilers.container;
 
 import com.elytradev.betterboilers.tile.TileEntityBoilerController;
+import com.elytradev.betterboilers.util.C28n;
 import com.elytradev.concrete.inventory.gui.ConcreteContainer;
 import com.elytradev.concrete.inventory.gui.widget.*;
 import com.elytradev.betterboilers.BetterBoilers;
@@ -24,8 +25,8 @@ public class BoilerContainer extends ConcreteContainer {
         setRootPanel(panel);
         WItemSlot slotsFuel = WItemSlot.of(container, 0, 3, 1);
         WPanel playerInv = this.createPlayerInventoryPanel();
-        WFluidBar tankWater = new WFluidBar(waterBG, waterFG, boiler.tankWater).withTooltip("%d/%d mB water");
-        WFluidBar tankSteam = new WFluidBar(steamBG, steamFG, boiler.tankSteam).withTooltip("%d/%d mB steam");
+        WFluidBar tankWater = new WFluidBar(waterBG, waterFG, boiler.tankWater).withTooltip(C28n.format("tooltip.bb.gui.water"));
+        WFluidBar tankSteam = new WFluidBar(steamBG, steamFG, boiler.tankSteam).withTooltip(C28n.format("tooltip.bb.gui.steam"));
         WBar fuelTicks0 = new WBar(fireBG, fireFG, container, 2, 3, WBar.Direction.UP);
         WBar fuelTicks1 = new WBar(fireBG, fireFG, container, 4, 5, WBar.Direction.UP);
         WBar fuelTicks2 = new WBar(fireBG, fireFG, container, 6, 7, WBar.Direction.UP);

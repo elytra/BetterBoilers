@@ -1,6 +1,5 @@
 package com.elytradev.betterboilers.tile;
 
-import com.elytradev.betterboilers.BBLog;
 import com.elytradev.betterboilers.block.IBoilerBlock;
 import com.elytradev.betterboilers.block.ModBlocks;
 import com.elytradev.betterboilers.util.BBConfig;
