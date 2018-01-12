@@ -49,7 +49,7 @@ public class BlockBoilerVent extends BlockTileEntity<TileEntityBoilerVent> imple
 
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
-        boolean hasBrass = !OreDictionary.getOres("plateBrass").isEmpty();
+        boolean hasBrass = !OreDictionary.getOres("plateBrass").isEmpty() || !OreDictionary.getOres("ingotBrass").isEmpty();
         return this.getDefaultState().withProperty(IS_BRASS, hasBrass);
     }
 }

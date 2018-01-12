@@ -17,8 +17,6 @@ tooltip.bb.inspector.1=Sneak-use on a controller to check a boiler's status.
 #tooltip.bb.inspector.1=Use in the air to check the manual. (NYI)
 tooltip.bb.boiler_pump.0=Continuous steam production and auto-eject!
 tooltip.bb.boiler_pump.1=However, results in lower overall production rates.
-tooltip.bb.gui.water=%d/%d mB Water
-tooltip.bb.gui.steam=%d/%d mB Steam
 
 #messages
 msg.bb.tooBig=Multiblock too big. (default max size 1000)

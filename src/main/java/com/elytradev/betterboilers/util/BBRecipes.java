@@ -24,20 +24,20 @@ public class BBRecipes {
 
         // Crafting bench recipes
 
-        String fallback = null;
+        String material = null;
         if(!OreDictionary.getOres("plateBrass").isEmpty()) {
-            fallback = "plateBrass";
+            material = "plateBrass";
         } else if (!OreDictionary.getOres("ingotBrass").isEmpty()) {
             BBLog.warn("Oops, couldn't find brass plates! Falling back to brass ingot boiler recipe.");
-            fallback = "ingotBrass";
+            material = "ingotBrass";
         } else if (!OreDictionary.getOres("plateConstantan").isEmpty()) {
             BBLog.warn("Oh dear, couldn't find any brass. Falling back to constantan plate boiler recipe.");
-            fallback = "plateConstantan";
+            material = "plateConstantan";
         }
-        if (fallback != null) {
+        if (material != null) {
             recipe(r, new ShapedOreRecipe(new ResourceLocation("betterboilers:blocks"), new ItemStack(ModBlocks.BOILER, 16),
                     "bbb", "bib", "bbb",
-                    'b', fallback,
+                    'b', material,
                     'i', new ItemStack(Items.IRON_INGOT)
             ));
         } else {
@@ -60,6 +60,11 @@ public class BBRecipes {
                 'b', new ItemStack(ModBlocks.BOILER),
                 'i', new ItemStack(Items.IRON_INGOT),
                 'u', new ItemStack(Blocks.IRON_BARS)
+        ));
+        recipe(r, new ShapedOreRecipe(new ResourceLocation("betterboilers:blocks"), new ItemStack(ModBlocks.PUMP, 1),
+                "ibi",
+                'b', new ItemStack(ModBlocks.VENT),
+                'i', new ItemStack(Blocks.PISTON)
         ));
         recipe(r, new ShapedOreRecipe(new ResourceLocation("betterboilers:blocks"), new ItemStack(ModBlocks.FIREBOX, 8),
                 " b ", "bib", " b ",

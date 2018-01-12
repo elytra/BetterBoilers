@@ -185,6 +185,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
         NBTTagCompound tag = super.writeToNBT(compound);
         tag.setInteger("BoilerCount", boilerBlockCount);
         tag.setInteger("FireboxCount", fireboxBlockCount);
+        tag.setInteger("PumpCount", pumpCount);
         tag.setIntArray("CurrentFuelTime", currentFuelTime);
         tag.setIntArray("MaxFuelTime", maxFuelTime);
         tag.setTag("WaterTank", tankWater.writeToNBT(new NBTTagCompound()));
@@ -198,6 +199,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
         super.readFromNBT(compound);
         boilerBlockCount = compound.getInteger("BoilerCount");
         fireboxBlockCount = compound.getInteger("FireboxCount");
+        pumpCount = compound.getInteger("PumpCount");
         tankWater.setCapacity(1000 * boilerBlockCount);
         tankSteam.setCapacity(500 * boilerBlockCount);
         currentFuelTime = compound.getIntArray("CurrentFuelTime");
@@ -218,13 +220,13 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        handleUpdateTag(pkt.getNbtCompound());
+    public void handleUpdateTag(NBTTagCompound tag) {
+        readFromNBT(tag);
     }
 
     @Override
-    public void handleUpdateTag(NBTTagCompound tag) {
-        readFromNBT(tag);
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+        handleUpdateTag(pkt.getNbtCompound());
     }
 
     @Override
