@@ -19,6 +19,12 @@ public class BoilerContainer extends ConcreteContainer {
     private ResourceLocation fireFG = new ResourceLocation(BetterBoilers.modId,"textures/gui/fire_fg.png");
     private ResourceLocation arrowBG = new ResourceLocation(BetterBoilers.modId,"textures/gui/arrow_bg.png");
     private ResourceLocation arrowFG = new ResourceLocation(BetterBoilers.modId,"textures/gui/arrow_fg.png");
+    private static ResourceLocation[] pumpAnim = new ResourceLocation[13];
+    static {
+        for (int i = 0; i <= 12; i++) {
+            pumpAnim[i] = new ResourceLocation(BetterBoilers.modId, "textures/gui/pump/" + i + ".png");
+        }
+    }
 
     public BoilerContainer(IInventory player, IInventory container, TileEntityBoilerController boiler) {
         super(player, container);
@@ -36,7 +42,7 @@ public class BoilerContainer extends ConcreteContainer {
         WImage steamBar = new WImage(new ResourceLocation(BetterBoilers.modId, "textures/gui/steam_bar.png"));
         WImage waterBar1 = new WImage(new ResourceLocation(BetterBoilers.modId, "textures/gui/water_bar.png"));
         WImage steamBar1 = new WImage(new ResourceLocation(BetterBoilers.modId, "textures/gui/steam_bar.png"));
-        WAnim pump = new WAnim(BetterBoilers.modId,"pump", 13, 150);
+        WAnim pump = new WAnim( 150, pumpAnim);
         panel.add(slotsFuel, 9, 64);
         panel.add(playerInv, 0, 87);
         panel.add(tankWater, 11, 15, 50, 24);
