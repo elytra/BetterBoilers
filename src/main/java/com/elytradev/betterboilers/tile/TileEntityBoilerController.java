@@ -102,6 +102,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
 
     public boolean isValid(World world, List<BlockPos> blocks) {
         int minY = 255;
+        int validBlockCount = 0;
         for(BlockPos pos : blocks) minY = Math.min(pos.getY(), minY);
         if (this.pos.getY() != minY) {
             status = "msg.bb.badController";
@@ -114,27 +115,28 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
                     status = "msg.bb.tooManyControllers";
                     return false;
                 }
+                validBlockCount++;
             }
             if (world.getBlockState(pos).getBlock() == ModBlocks.BOILER
                     || world.getBlockState(pos).getBlock() == ModBlocks.VENT
                     || world.getBlockState(pos).getBlock() == ModBlocks.VALVE
                     || world.getBlockState(pos).getBlock() == ModBlocks.PUMP) {
-                boilerBlockCount++;
                 if (pos.getY() == minY) {
                     status = "msg.bb.badBoiler";
                     return false;
                 }
+                validBlockCount++;
             }
             if (world.getBlockState(pos).getBlock() == ModBlocks.FIREBOX
                     || world.getBlockState(pos).getBlock() == ModBlocks.HATCH) {
-                fireboxBlockCount++;
                 if (pos.getY() != minY) {
                     status = "msg.bb.badFirebox";
                     return false;
                 }
+                validBlockCount++;
             }
         }
-        if (boilerBlockCount + fireboxBlockCount < BBConfig.defaultMinMultiblock) {
+        if (validBlockCount < BBConfig.defaultMinMultiblock) {
             status = "msg.bb.tooSmall";
             return false;
         }

@@ -19,6 +19,8 @@ public class BoilerContainer extends ConcreteContainer {
     private ResourceLocation fireFG = new ResourceLocation(BetterBoilers.modId,"textures/gui/fire_fg.png");
     private ResourceLocation arrowBG = new ResourceLocation(BetterBoilers.modId,"textures/gui/arrow_bg.png");
     private ResourceLocation arrowFG = new ResourceLocation(BetterBoilers.modId,"textures/gui/arrow_fg.png");
+    private ResourceLocation fireABG = new ResourceLocation(BetterBoilers.modId,"textures/gui/single_fire_bg.png");
+    private ResourceLocation fireAFG = new ResourceLocation(BetterBoilers.modId,"textures/gui/single_fire_fg.png");
     private static ResourceLocation[] pumpAnim = new ResourceLocation[13];
     static {
         for (int i = 0; i <= 12; i++) {
@@ -54,6 +56,10 @@ public class BoilerContainer extends ConcreteContainer {
         panel.add(fuelTicks0, 11, 46, 14, 14);
         panel.add(fuelTicks1, 29, 46, 14, 14);
         panel.add(fuelTicks2, 47, 46, 14, 14);
+//        panel.add(fuelTicks0, 10, 46, 4, 14);
+//        panel.add(fuelTicks1, 15, 46, 4, 14);
+//        panel.add(fuelTicks2, 20, 46, 4, 14);
+
         if (boiler.pumpCount == 0) {
             panel.add(progressTicks, 75, 37, 24, 17);
         } else {

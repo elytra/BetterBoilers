@@ -19,6 +19,7 @@ public class BlockController extends BlockTileEntity<TileEntityBoilerController>
 
     public BlockController() {
         super(Material.ROCK, "controller");
+        setUnlocalizedName("bb.controller");
 //        this.setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false));
 
         setCreativeTab(BetterBoilers.creativeTab);
