@@ -170,6 +170,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
         }
         tankWater.setCapacity(1000*boilerBlockCount);
         tankSteam.setCapacity(500*boilerBlockCount);
+        markDirty();
     }
 
     @Override
@@ -180,6 +181,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
                 ((TileEntityBoilerPart) te).setController(null);
             }
         }
+        markDirty();
     }
 
     @Override
