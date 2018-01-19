@@ -18,7 +18,7 @@ public class BBConfig extends ConcreteConfig {
     @ConfigValue(type = Property.Type.INTEGER, category = "BoilerUsage", comment = "The amount of steam produced per boiler cycle. Water cost will always be 2x the resulting steam.")
     public static int steamPerBoil = 50;
     @ConfigValue(type = Property.Type.DOUBLE, category = "BoilerUsage", comment = "The multiplier for how much steam is produced per tick with a pump. Steam production calculated by <number of firebox blocks> * <number of active fuel sources> * <standard steam/tick> * <this multiplier>.")
-    public static double pumpMultiplier = .75;
+    public static double pumpMultiplier = 1;
     @ConfigValue(type = Property.Type.INTEGER, category = "BoilerUsage", comment = "How much steam a pump will auto-output a tick. Can still be extracted from faster with a machine.")
     public static int pumpDrain = 50;
 

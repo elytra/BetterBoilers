@@ -83,7 +83,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
                     if (currentProcessTime >= PROCESS_LENGTH) {
                         tankWater.drain(2 * BBConfig.steamPerBoil, true);
                         tankSteam.fill(new FluidStack(ModBlocks.FLUID_STEAM, BBConfig.steamPerBoil), true);
-                        currentProcessTime = 0;
+                        currentProcessTime -= PROCESS_LENGTH;
                     }
                 }
             } else {
