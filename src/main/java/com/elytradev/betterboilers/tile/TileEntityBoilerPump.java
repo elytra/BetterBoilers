@@ -58,7 +58,7 @@ public class TileEntityBoilerPump extends TileEntityBoilerPart implements IBoile
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if (controller==null) return null; //!important
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            return (T) FluidAccess.insertOnly(controller.getTankSteam());
+            return (T) FluidAccess.extractOnly(controller.getTankSteam());
         } else {
             return super.getCapability(capability, facing);
         }

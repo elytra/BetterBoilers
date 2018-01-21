@@ -87,15 +87,16 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
                     }
                 }
             } else {
-                if (canPumpFluid())
-                fuelThisTick = 0;
-                if (consumeFuel(0)) fuelThisTick++;
-                if (consumeFuel(1)) fuelThisTick++;
-                if (consumeFuel(2)) fuelThisTick++;
-                double fuelPerTick = (double)BBConfig.steamPerBoil/(double)BBConfig.ticksToBoil;
-                int toProcess = (int)Math.ceil(fireboxBlockCount * fuelThisTick * fuelPerTick * BBConfig.pumpMultiplier); //WHY THE FUCK DOES MATH.CEIL RETURN A DOUBLE WHAT THE ACTUAL FUCK
-                tankWater.drain(2 * toProcess, true);
-                tankSteam.fill(new FluidStack(ModBlocks.FLUID_STEAM, toProcess), true);
+                if (canPumpFluid()) {
+                    fuelThisTick = 0;
+                    if (consumeFuel(0)) fuelThisTick++;
+                    if (consumeFuel(1)) fuelThisTick++;
+                    if (consumeFuel(2)) fuelThisTick++;
+                    double fuelPerTick = (double) BBConfig.steamPerBoil / (double) BBConfig.ticksToBoil;
+                    int toProcess = (int) Math.ceil(fireboxBlockCount * fuelThisTick * fuelPerTick * BBConfig.pumpMultiplier); //WHY THE FUCK DOES MATH.CEIL RETURN A DOUBLE WHAT THE ACTUAL FUCK
+                    tankWater.drain(2 * toProcess, true);
+                    tankSteam.fill(new FluidStack(ModBlocks.FLUID_STEAM, toProcess), true);
+                }
             }
         }
     }
@@ -256,7 +257,8 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
 
     private boolean canPumpFluid() {
         // for when there are pump blocks present
-        int toProcess = (int)Math.ceil((fireboxBlockCount * 3 * pumpCount)*.5); // mult by 3 for max number of active fuel sources at a time
+        double fuelPerTick = (double) BBConfig.steamPerBoil / (double) BBConfig.ticksToBoil;
+        int toProcess = (int)Math.ceil(fireboxBlockCount * 3 * fuelPerTick * BBConfig.pumpMultiplier); // mult by 3 for max number of active fuel sources at a time
         FluidStack tankDrained = tankWater.drain(2*toProcess, false);
         int tankFilled = tankSteam.fill(new FluidStack(ModBlocks.FLUID_STEAM, toProcess), false);
         return (tankDrained != null && tankFilled == toProcess);
