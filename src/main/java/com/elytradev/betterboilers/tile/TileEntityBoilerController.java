@@ -268,7 +268,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
         if (currentFuelTime[slot] <= 0) {
             ItemStack usedFuel = inv.extractItem(slot, 1, false);
             if (!usedFuel.isEmpty()) {
-                int newFuelTicks = TileEntityFurnace.getItemBurnTime(usedFuel);
+                int newFuelTicks = 5 * TileEntityFurnace.getItemBurnTime(usedFuel);
                 maxFuelTime[slot] = newFuelTicks;
                 currentFuelTime[slot] = newFuelTicks;
             } else {
