@@ -9,7 +9,14 @@ tile.boiler_vent.name=Boiler Vent
 tile.boiler_pump.name=Boiler Pump
 tile.firebox.name=Firebox
 tile.firebox_hatch.name=Firebox Hatch
-tile.bb.controller.name=Boiler Controller
+tile.bb.boiler_controller.name=Boiler Controller
+tile.chamber.name=Turbine Chamber
+tile.cap.name=Turbine Cap
+tile.rotor.name=Turbine Rotor
+tile.gasket.name=Turbine Gasket
+tile.pressure_valve.name=Turbine Pressure Valve
+tile.power_tap.name=Turbine Power Tap
+tile.turbine_controller.name=Turbine Controller
 
 #tooltips
 tooltip.bb.inspector.0=What did you do this time?
@@ -21,12 +28,15 @@ tooltip.bb.boiler_pump.1=However, results in lower overall production rates.
 #messages
 msg.bb.tooBig=Multiblock too big. (default max size 1000)
 msg.bb.tooSmall=Multiblock too small. (default min size 36)
-msg.bb.badController=Misplaced controller. (must be on firebox level)
-msg.bb.tooManyControllers=Multiple controllers. (only one controller per boiler)
+msg.bb.badBoilerController=Misplaced controller. (must be on firebox level)
+msg.bb.tooManyControllers=Multiple controllers. (only one controller per multiblock)
 msg.bb.badBoiler=Misplaced boiler component. (no boiler components on firebox level)
 msg.bb.badFirebox=Misplaced firebox component. (firebox components only on the bottom level)
+msg.bb.badChamber=Misplaced chamber component. (no chamber components on cap level)
+msg.bb.badCap=Misplaced cap component. (cap components only on the top level)
+msg.bb.badGasket=Misformed gasket. (gasket must form a solid ring around the outside of the top level, check manual [NYI] for example)
+msg.bb.badTurbineController=Misplaced controller. (must be part of chamber)
 msg.bb.noIssue=No issues
-
 
 #misc
 gui.boiler.name=Boiler

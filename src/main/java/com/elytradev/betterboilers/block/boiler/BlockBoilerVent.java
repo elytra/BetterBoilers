@@ -1,7 +1,8 @@
-package com.elytradev.betterboilers.block;
+package com.elytradev.betterboilers.block.boiler;
 
 import com.elytradev.betterboilers.BetterBoilers;
-import com.elytradev.betterboilers.tile.TileEntityBoilerValve;
+import com.elytradev.betterboilers.block.BlockTileEntity;
+import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerVent;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -12,26 +13,26 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class BlockBoilerValve extends BlockTileEntity<TileEntityBoilerValve> implements IBoilerBlock {
+public class BlockBoilerVent extends BlockTileEntity<TileEntityBoilerVent> implements IBoilerBlock {
 
     protected String name;
     public static PropertyBool IS_BRASS= PropertyBool.create("is_brass");
 
-    public BlockBoilerValve() {
-        super(Material.IRON, "boiler_valve");
+    public BlockBoilerVent() {
+        super(Material.IRON, "boiler_vent");
         this.setDefaultState(blockState.getBaseState().withProperty(IS_BRASS, true));
 
         setCreativeTab(BetterBoilers.creativeTab);
     }
 
     @Override
-    public Class<TileEntityBoilerValve> getTileEntityClass() {
-        return TileEntityBoilerValve.class;
+    public Class<TileEntityBoilerVent> getTileEntityClass() {
+        return TileEntityBoilerVent.class;
     }
 
     @Override
-    public TileEntityBoilerValve createTileEntity(World world, IBlockState state) {
-        return new TileEntityBoilerValve();
+    public TileEntityBoilerVent createTileEntity(World world, IBlockState state) {
+        return new TileEntityBoilerVent();
     }
 
     @Override

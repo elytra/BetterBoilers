@@ -1,7 +1,8 @@
 package com.elytradev.betterboilers.tile;
 
-import com.elytradev.betterboilers.block.BlockController;
+import com.elytradev.betterboilers.block.boiler.BlockBoilerController;
 import com.elytradev.betterboilers.block.ModBlocks;
+import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerController;
 import com.elytradev.betterboilers.util.BBConfig;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -70,9 +71,9 @@ public abstract class TileEntityMultiblockController extends TileEntity {
     public void setControllerStatus( ControllerStatus state, String status) {
         errorReason = new TextComponentTranslation(status);
         if (state == ControllerStatus.ERRORED) {
-            world.setBlockState(this.getPos(), ModBlocks.CONTROLLER.getDefaultState().withProperty(BlockController.ACTIVE, false));
+            world.setBlockState(this.getPos(), ModBlocks.BOILER_CONTROLLER.getDefaultState().withProperty(BlockBoilerController.ACTIVE, false));
         } else {
-            world.setBlockState(this.getPos(), ModBlocks.CONTROLLER.getDefaultState().withProperty(BlockController.ACTIVE, true));
+            world.setBlockState(this.getPos(), ModBlocks.BOILER_CONTROLLER.getDefaultState().withProperty(BlockBoilerController.ACTIVE, true));
         }
     }
 

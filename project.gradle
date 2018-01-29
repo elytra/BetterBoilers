@@ -30,6 +30,6 @@ repositories {
 }
 
 dependencies {
-	deobfCompile()
+
 }
 }

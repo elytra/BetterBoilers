@@ -1,4 +1,4 @@
-package com.elytradev.betterboilers.tile;
+package com.elytradev.betterboilers.tile.boiler;
 
 import javax.annotation.Nullable;
 

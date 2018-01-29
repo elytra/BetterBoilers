@@ -1,5 +1,8 @@
-package com.elytradev.betterboilers.tile;
+package com.elytradev.betterboilers.tile.boiler;
 
+import com.elytradev.betterboilers.tile.boiler.IBoilerPart;
+import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerController;
+import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerPart;
 import com.elytradev.betterboilers.util.FluidAccess;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -7,7 +10,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityBoilerVent extends TileEntityBoilerPart implements IBoilerPart {
+public class TileEntityBoilerValve extends TileEntityBoilerPart implements IBoilerPart {
     private TileEntityBoilerController controller;
 
     @Override
@@ -36,7 +39,7 @@ public class TileEntityBoilerVent extends TileEntityBoilerPart implements IBoile
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if (controller==null) return null; //!important
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            return (T) FluidAccess.extractOnly(controller.getTankSteam());
+            return (T) FluidAccess.insertOnly(controller.getTankWater());
         } else {
             return super.getCapability(capability, facing);
         }

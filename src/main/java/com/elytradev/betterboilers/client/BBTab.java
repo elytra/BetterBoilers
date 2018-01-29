@@ -14,6 +14,6 @@ public class BBTab extends CreativeTabs {
 
     @Override
     public ItemStack getTabIconItem() {
-        return new ItemStack(ModBlocks.CONTROLLER);
+        return new ItemStack(ModBlocks.BOILER_CONTROLLER);
     }
 }

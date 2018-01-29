@@ -1,6 +1,6 @@
 package com.elytradev.betterboilers.item;
 
-import com.elytradev.betterboilers.tile.TileEntityBoilerController;
+import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerController;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;

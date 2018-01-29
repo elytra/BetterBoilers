@@ -5,7 +5,6 @@ import com.elytradev.betterboilers.block.ModBlocks;
 import com.elytradev.betterboilers.item.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
@@ -77,7 +76,7 @@ public class BBRecipes {
                 'i', new ItemStack(Items.IRON_INGOT),
                 'u', new ItemStack(Blocks.IRON_BARS)
         ));
-        recipe(r, new ShapedOreRecipe(new ResourceLocation("betterboilers:blocks"), new ItemStack(ModBlocks.CONTROLLER, 1),
+        recipe(r, new ShapedOreRecipe(new ResourceLocation("betterboilers:blocks"), new ItemStack(ModBlocks.BOILER_CONTROLLER, 1),
                 "ibi", "bub", "ibi",
                 'b', new ItemStack(ModBlocks.FIREBOX),
                 'i', new ItemStack(Items.IRON_INGOT),

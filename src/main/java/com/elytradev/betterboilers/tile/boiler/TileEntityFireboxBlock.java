@@ -1,4 +1,8 @@
-package com.elytradev.betterboilers.tile;
+package com.elytradev.betterboilers.tile.boiler;
+
+import com.elytradev.betterboilers.tile.boiler.IBoilerPart;
+import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerController;
+import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerPart;
 
 import javax.annotation.Nullable;
 

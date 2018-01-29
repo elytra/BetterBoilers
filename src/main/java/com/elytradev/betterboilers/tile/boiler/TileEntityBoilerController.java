@@ -1,7 +1,8 @@
-package com.elytradev.betterboilers.tile;
+package com.elytradev.betterboilers.tile.boiler;
 
-import com.elytradev.betterboilers.block.IBoilerBlock;
+import com.elytradev.betterboilers.block.boiler.IBoilerBlock;
 import com.elytradev.betterboilers.block.ModBlocks;
+import com.elytradev.betterboilers.tile.TileEntityMultiblockController;
 import com.elytradev.betterboilers.util.BBConfig;
 import com.elytradev.concrete.inventory.*;
 import com.google.common.base.Predicates;
@@ -58,7 +59,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
         this.inv = new ConcreteItemStorage(3).withValidators(Validators.FURNACE_FUELS,
                 Validators.FURNACE_FUELS,
                 Validators.FURNACE_FUELS)
-                .withName(ModBlocks.CONTROLLER.getUnlocalizedName() + ".name");;
+                .withName(ModBlocks.BOILER_CONTROLLER.getUnlocalizedName() + ".name");;
         this.tankWater = new ConcreteFluidTank(1000).withFillValidator((it)->(it.getFluid() == FluidRegistry.WATER));
         this.tankSteam = new ConcreteFluidTank(500).withFillValidator((it)->false);
         tankWater.listen(this::markDirty);
@@ -106,7 +107,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
         int validBlockCount = 0;
         for(BlockPos pos : blocks) minY = Math.min(pos.getY(), minY);
         if (this.pos.getY() != minY) {
-            status = "msg.bb.badController";
+            status = "msg.bb.badBoilerController";
             return false;
         }
 
@@ -157,7 +158,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
             }
             if (world.getBlockState(pos).getBlock() == ModBlocks.FIREBOX
                     || world.getBlockState(pos).getBlock() == ModBlocks.HATCH
-                    || world.getBlockState(pos).getBlock() == ModBlocks.CONTROLLER) {
+                    || world.getBlockState(pos).getBlock() == ModBlocks.BOILER_CONTROLLER) {
                 fireboxBlockCount++;
             }
             if (world.getBlockState(pos).getBlock() == ModBlocks.PUMP) {

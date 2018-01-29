@@ -1,6 +1,7 @@
-package com.elytradev.betterboilers.tile;
+package com.elytradev.betterboilers.tile.boiler;
 
 import com.elytradev.betterboilers.BBLog;
+import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerController;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

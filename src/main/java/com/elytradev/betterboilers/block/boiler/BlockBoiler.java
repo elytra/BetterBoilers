@@ -1,7 +1,8 @@
-package com.elytradev.betterboilers.block;
+package com.elytradev.betterboilers.block.boiler;
 
 import com.elytradev.betterboilers.BetterBoilers;
-import com.elytradev.betterboilers.tile.TileEntityBoilerBlock;
+import com.elytradev.betterboilers.block.BlockTileEntity;
+import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -11,8 +12,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
-
-import static com.elytradev.betterboilers.block.ModBlocks.BOILER;
 
 public class BlockBoiler extends BlockTileEntity<TileEntityBoilerBlock> implements IBoilerBlock {
 

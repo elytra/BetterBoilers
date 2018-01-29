@@ -1,7 +1,7 @@
 package com.elytradev.betterboilers;
 
 import com.elytradev.betterboilers.container.BoilerContainer;
-import com.elytradev.betterboilers.tile.TileEntityBoilerController;
+import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerController;
 import com.elytradev.betterboilers.util.BBConfig;
 import com.elytradev.concrete.inventory.IContainerInventoryHolder;
 import com.elytradev.concrete.inventory.gui.client.ConcreteGui;
@@ -17,7 +17,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
