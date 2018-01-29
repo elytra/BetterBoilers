@@ -1,7 +1,5 @@
 package com.elytradev.betterboilers.container;
 
-import com.elytradev.betterboilers.container.widgets.WAnim;
-import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerController;
 import com.elytradev.betterboilers.tile.turbine.TileEntityTurbineController;
 import com.elytradev.concrete.inventory.gui.ConcreteContainer;
 import com.elytradev.concrete.inventory.gui.widget.*;
