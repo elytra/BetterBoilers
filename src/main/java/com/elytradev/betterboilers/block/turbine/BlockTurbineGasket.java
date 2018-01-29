@@ -12,7 +12,7 @@ public class BlockTurbineGasket extends BlockTileEntity<TileEntityTurbineGasket>
     protected String name;
 
     public BlockTurbineGasket() {
-        super(Material.IRON, "gasket");
+        super(Material.IRON, "turbine_gasket");
 
         setCreativeTab(BetterBoilers.creativeTab);
     }

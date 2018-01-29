@@ -12,7 +12,7 @@ public class BlockTurbinePressureValve extends BlockTileEntity<TileEntityTurbine
     protected String name;
 
     public BlockTurbinePressureValve() {
-        super(Material.IRON, "pressure_valve");
+        super(Material.IRON, "turbine_pressure_valve");
 
         setCreativeTab(BetterBoilers.creativeTab);
     }

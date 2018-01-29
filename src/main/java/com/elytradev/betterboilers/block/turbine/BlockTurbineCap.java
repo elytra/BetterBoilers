@@ -12,7 +12,7 @@ public class BlockTurbineCap extends BlockTileEntity<TileEntityTurbineCap> imple
     protected String name;
 
     public BlockTurbineCap() {
-        super(Material.IRON, "cap");
+        super(Material.IRON, "turbine_cap");
 
         setCreativeTab(BetterBoilers.creativeTab);
     }

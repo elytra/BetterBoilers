@@ -12,7 +12,7 @@ public class BlockTurbinePowerTap extends BlockTileEntity<TileEntityTurbinePower
     protected String name;
 
     public BlockTurbinePowerTap() {
-        super(Material.IRON, "power_tap");
+        super(Material.IRON, "turbine_power_tap");
 
         setCreativeTab(BetterBoilers.creativeTab);
     }

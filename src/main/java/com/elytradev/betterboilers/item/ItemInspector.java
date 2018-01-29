@@ -1,6 +1,7 @@
 package com.elytradev.betterboilers.item;
 
 import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerController;
+import com.elytradev.betterboilers.tile.turbine.TileEntityTurbineController;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
@@ -22,6 +23,13 @@ public class ItemInspector extends ItemBase {
         if (player.isSneaking()) {
             if (te instanceof TileEntityBoilerController) {
                 TileEntityBoilerController controller = (TileEntityBoilerController)te;
+                if (!world.isRemote) {
+                    player.sendMessage(controller.errorReason);
+                }
+                return EnumActionResult.SUCCESS;
+            }
+            if (te instanceof TileEntityTurbineController) {
+                TileEntityTurbineController controller = (TileEntityTurbineController)te;
                 if (!world.isRemote) {
                     player.sendMessage(controller.errorReason);
                 }

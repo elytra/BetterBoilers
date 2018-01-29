@@ -1,5 +1,6 @@
 package com.elytradev.betterboilers.tile.turbine;
 
+import com.elytradev.betterboilers.BBLog;
 import com.elytradev.betterboilers.block.turbine.ITurbineBlock;
 import com.elytradev.betterboilers.block.ModBlocks;
 import com.elytradev.betterboilers.tile.TileEntityMultiblockController;
@@ -64,7 +65,7 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
             currentScanTime = 0;
         }
         currentScanTime++;
-        this.energyStorage.tick();
+        //this.energyStorage.tick();
 
     }
 
@@ -106,6 +107,7 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 validBlockCount++;
             }
             if (world.getBlockState(pos).getBlock() == ModBlocks.GASKET) {
+                boolean goodGasketBlock = false;
                 if (pos.getY() != maxY) {
                     status = "msg.bb.badGasket";
                     return false;
@@ -114,11 +116,13 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                         || pos.getX() == minX
                         || pos.getZ() == maxZ
                         || pos.getZ() == minZ) {
-                    continue;
-                } else {
+                    goodGasketBlock = true;
+                }
+                if (!goodGasketBlock) {
                     status = "msg.bb.badGasket";
                     return false;
                 }
+                validBlockCount++;
             }
             if (world.getBlockState(pos).getBlock() == ModBlocks.ROTOR
                     || world.getBlockState(pos).getBlock() == ModBlocks.CAP
@@ -130,8 +134,33 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 validBlockCount++;
             }
         }
+        for (int i = minX; i <= maxX; i++) {
+            BlockPos pos1 = new BlockPos(i, maxY, maxZ);
+            BlockPos pos2 = new BlockPos(i, maxY, minZ);
+            if (world.getBlockState(pos1).getBlock() != ModBlocks.GASKET) {
+                status = "msg.bb.badGasket";
+                return false;
+            }
+            if (world.getBlockState(pos2).getBlock() != ModBlocks.GASKET) {
+                status = "msg.bb.badGasket";
+                return false;
+            }
+        }
+        for (int i = minZ; i <= maxZ; i++) {
+            BlockPos pos1 = new BlockPos(maxX, maxY, i);
+            BlockPos pos2 = new BlockPos(minX, maxY, i);
+            if (world.getBlockState(pos1).getBlock() != ModBlocks.GASKET) {
+                status = "msg.bb.badGasket";
+                return false;
+            }
+            if (world.getBlockState(pos2).getBlock() != ModBlocks.GASKET) {
+                status = "msg.bb.badGasket";
+                return false;
+            }
+        }
         if (validBlockCount < BBConfig.defaultMinMultiblock) {
             status = "msg.bb.tooSmall";
+            BBLog.info(validBlockCount);
             return false;
         }
         return true;

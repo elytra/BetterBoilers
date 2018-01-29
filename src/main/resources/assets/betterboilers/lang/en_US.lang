@@ -10,12 +10,12 @@ tile.boiler_pump.name=Boiler Pump
 tile.firebox.name=Firebox
 tile.firebox_hatch.name=Firebox Hatch
 tile.bb.boiler_controller.name=Boiler Controller
-tile.chamber.name=Turbine Chamber
-tile.cap.name=Turbine Cap
-tile.rotor.name=Turbine Rotor
-tile.gasket.name=Turbine Gasket
-tile.pressure_valve.name=Turbine Pressure Valve
-tile.power_tap.name=Turbine Power Tap
+tile.turbine_chamber.name=Turbine Chamber
+tile.turbine_cap.name=Turbine Cap
+tile.turbine_rotor.name=Turbine Rotor
+tile.turbine_gasket.name=Turbine Gasket
+tile.turbine_pressure_valve.name=Turbine Pressure Valve
+tile.turbine_power_tap.name=Turbine Power Tap
 tile.turbine_controller.name=Turbine Controller
 
 #tooltips

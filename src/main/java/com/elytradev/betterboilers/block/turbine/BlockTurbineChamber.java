@@ -12,7 +12,7 @@ public class BlockTurbineChamber extends BlockTileEntity<TileEntityTurbineChambe
     protected String name;
 
     public BlockTurbineChamber() {
-        super(Material.IRON, "chamber");
+        super(Material.IRON, "turbine_chamber");
 
         setCreativeTab(BetterBoilers.creativeTab);
     }

@@ -2,7 +2,9 @@ package com.elytradev.betterboilers.tile;
 
 import com.elytradev.betterboilers.block.boiler.BlockBoilerController;
 import com.elytradev.betterboilers.block.ModBlocks;
+import com.elytradev.betterboilers.block.turbine.BlockTurbineController;
 import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerController;
+import com.elytradev.betterboilers.tile.turbine.TileEntityTurbineController;
 import com.elytradev.betterboilers.util.BBConfig;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -36,7 +38,11 @@ public abstract class TileEntityMultiblockController extends TileEntity {
         int itr = 0;
         while (!queue.isEmpty()) {
             if (itr > getMaxBlocksPerMultiblock()) {
-                setControllerStatus(TileEntityBoilerController.ControllerStatus.ERRORED, "msg.bb.tooBig");
+                if (world.getBlockState(this.getPos()) instanceof BlockBoilerController) {
+                    setControllerStatus(TileEntityBoilerController.ControllerStatus.ERRORED, "msg.bb.tooBig");
+                } else {
+                    setControllerStatus(TileEntityTurbineController.ControllerStatus.ERRORED, "msg.bb.tooBig");
+                }
                 return;
             }
             BlockPos pos = queue.remove(0);
@@ -60,20 +66,36 @@ public abstract class TileEntityMultiblockController extends TileEntity {
         }
 
         if (!validator.test(world, members)) {
-            setControllerStatus(TileEntityBoilerController.ControllerStatus.ERRORED, status);
+            if (world.getBlockState(this.getPos()) instanceof BlockBoilerController) {
+                setControllerStatus(TileEntityBoilerController.ControllerStatus.ERRORED, status);
+            } else {
+                setControllerStatus(TileEntityTurbineController.ControllerStatus.ERRORED, status);
+            }
             return;
         }
 
         onAssemble(world, members);
-        setControllerStatus(TileEntityBoilerController.ControllerStatus.ACTIVE, "msg.bb.noIssue");
+        if (world.getBlockState(this.getPos()) instanceof BlockBoilerController) {
+            setControllerStatus(TileEntityBoilerController.ControllerStatus.ACTIVE, "msg.bb.noIssue");
+        } else {
+            setControllerStatus(TileEntityTurbineController.ControllerStatus.ACTIVE, "msg.bb.noIssue");
+        }
     }
 
     public void setControllerStatus( ControllerStatus state, String status) {
         errorReason = new TextComponentTranslation(status);
         if (state == ControllerStatus.ERRORED) {
-            world.setBlockState(this.getPos(), ModBlocks.BOILER_CONTROLLER.getDefaultState().withProperty(BlockBoilerController.ACTIVE, false));
+            if (world.getBlockState(this.getPos()) instanceof  BlockBoilerController) {
+                world.setBlockState(this.getPos(), ModBlocks.BOILER_CONTROLLER.getDefaultState().withProperty(BlockBoilerController.ACTIVE, false));
+            } else {
+                world.setBlockState(this.getPos(), ModBlocks.TURBINE_CONTROLLER.getDefaultState().withProperty(BlockTurbineController.ACTIVE, false));
+            }
         } else {
-            world.setBlockState(this.getPos(), ModBlocks.BOILER_CONTROLLER.getDefaultState().withProperty(BlockBoilerController.ACTIVE, true));
+            if (world.getBlockState(this.getPos()) instanceof  BlockBoilerController) {
+                world.setBlockState(this.getPos(), ModBlocks.BOILER_CONTROLLER.getDefaultState().withProperty(BlockBoilerController.ACTIVE, true));
+            } else {
+                world.setBlockState(this.getPos(), ModBlocks.TURBINE_CONTROLLER.getDefaultState().withProperty(BlockTurbineController.ACTIVE, true));
+            }
         }
     }
 

@@ -1,0 +1,37 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"textures": {
+			"side": "minecraft:blocks/furnace_front_off",
+			"end": "minecraft:blocks/furnace_top"
+		}
+	},
+	"variants": {
+		"active": {
+			"true": {
+				"model": "minecraft:cube_column",
+				"textures": {
+					"side": "minecraft:blocks/furnace_front_on"
+				}
+			},
+			"false": {
+				"model": "minecraft:cube_column",
+				"textures": {
+					"side": "minecraft:blocks/furnace_front_off"
+				}
+			}
+		},
+		"normal": {
+			"model": "minecraft:cube_column",
+			"textures": {
+				"side": "minecraft:blocks/furnace_front_off"
+			}
+		},
+		"inventory": {
+			"model": "minecraft:cube_column",
+			"textures": {
+				"side": "minecraft:blocks/furnace_front_on"
+			}
+		}
+	}
+}
