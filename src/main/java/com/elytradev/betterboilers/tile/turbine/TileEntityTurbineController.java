@@ -33,9 +33,9 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
     public ConcreteFluidTank tankSteam;
     public ObservableEnergyStorage energyStorage;
     public ConcreteItemStorage inv;
-    private int chamberBlockCount = 0; // might not last
-    private int capBlockCount = 0; // might not last
-    public int rotorCount = 0; // might not last
+    private int chamberBlockCount = 0;
+    private int capBlockCount = 0;
+    public int rotorCount = 0;
     private static final int RESCAN_TIME = 100;
     private int currentScanTime = 100;
 
@@ -97,7 +97,7 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 }
                 validBlockCount++;
             }
-            if (world.getBlockState(pos).getBlock() == ModBlocks.CHAMBER // all these still need to be changed
+            if (world.getBlockState(pos).getBlock() == ModBlocks.CHAMBER
                     || world.getBlockState(pos).getBlock() == ModBlocks.PRESSURE_VALVE) {
                 if (pos.getY() == maxY) {
                     status = "msg.bb.badChamber";
