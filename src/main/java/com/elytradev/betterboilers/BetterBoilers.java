@@ -1,7 +1,9 @@
 package com.elytradev.betterboilers;
 
 import com.elytradev.betterboilers.container.BoilerContainer;
+import com.elytradev.betterboilers.container.TurbineContainer;
 import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerController;
+import com.elytradev.betterboilers.tile.turbine.TileEntityTurbineController;
 import com.elytradev.betterboilers.util.BBConfig;
 import com.elytradev.concrete.inventory.IContainerInventoryHolder;
 import com.elytradev.concrete.inventory.gui.client.ConcreteGui;
@@ -61,6 +63,7 @@ public class BetterBoilers {
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new IGuiHandler() {
             public static final int BOILER = 0;
+            public static final int TURBINE = 1;
 
             @Nullable
             @Override
@@ -70,7 +73,10 @@ public class BetterBoilers {
                         return new BoilerContainer(
                                 player.inventory, ((IContainerInventoryHolder)world.getTileEntity(new BlockPos(x,y,z))).getContainerInventory(),
                                 (TileEntityBoilerController)world.getTileEntity(new BlockPos(x,y,z)));
-
+                    case TURBINE:
+                        return new TurbineContainer(
+                                player.inventory, ((IContainerInventoryHolder)world.getTileEntity(new BlockPos(x,y,z))).getContainerInventory(),
+                                (TileEntityTurbineController)world.getTileEntity(new BlockPos(x,y,z)));
                     default:
                         return null;
                 }
@@ -87,6 +93,11 @@ public class BetterBoilers {
                                 player.inventory, ((IContainerInventoryHolder)world.getTileEntity(new BlockPos(x,y,z))).getContainerInventory(),
                                 (TileEntityBoilerController)world.getTileEntity(new BlockPos(x,y,z)));
                         return new ConcreteGui(boilerContainer);
+                    case TURBINE:
+                        TurbineContainer turbineContainer = new TurbineContainer(
+                                player.inventory, ((IContainerInventoryHolder)world.getTileEntity(new BlockPos(x,y,z))).getContainerInventory(),
+                                (TileEntityTurbineController)world.getTileEntity(new BlockPos(x,y,z)));
+                        return new ConcreteGui(turbineContainer);
                     default:
                         return null;
                 }

@@ -1,6 +1,5 @@
 package com.elytradev.betterboilers.container;
 
-import com.elytradev.betterboilers.container.widgets.WAnim;
 import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerController;
 import com.elytradev.concrete.inventory.gui.ConcreteContainer;
 import com.elytradev.concrete.inventory.gui.widget.*;
@@ -43,7 +42,7 @@ public class BoilerContainer extends ConcreteContainer {
         WImage steamBar = new WImage(new ResourceLocation(BetterBoilers.modId, "textures/gui/steam_bar.png"));
         WImage waterBar1 = new WImage(new ResourceLocation(BetterBoilers.modId, "textures/gui/water_bar.png"));
         WImage steamBar1 = new WImage(new ResourceLocation(BetterBoilers.modId, "textures/gui/steam_bar.png"));
-        WAnim pump = new WAnim( 150, pumpAnim);
+        WAnimation pump = new WAnimation( 150, pumpAnim);
         panel.add(slotsFuel, 9, 64);
         panel.add(playerInv, 0, 87);
         panel.add(tankWater, 11, 15, 50, 24);
