@@ -25,6 +25,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.List;
 import java.util.function.BiPredicate;
@@ -67,6 +68,20 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
         currentScanTime++;
         //this.energyStorage.tick();
 
+        if (!world.isRemote) {
+            if (rotorCount > 0) {
+                if (canProcess()) {
+                    if (rotorCount == 1) {
+                        tankSteam.drain(BBConfig.steamPerGen, true);
+                        energyStorage.receiveEnergy(2 * BBConfig.steamPerGen, false);
+                    } else {
+                        int steamUsed = (int)Math.ceil(BBConfig.steamPerGen * (.5 * rotorCount - 1)) + BBConfig.steamPerGen;
+                        tankSteam.drain(steamUsed, true);
+                        energyStorage.receiveEnergy(2*steamUsed, false);
+                    }
+                }
+            }
+        }
     }
 
     public boolean isValid(World world, List<BlockPos> blocks) {
@@ -267,6 +282,22 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 player.connection.sendPacket(packet);
             }
         }
+    }
+
+    private boolean canProcess() {
+        FluidStack tankDrained;
+        int powerGen;
+        int steamUsed;
+        if (rotorCount == 1) {
+            steamUsed = BBConfig.steamPerGen;
+            tankDrained = tankSteam.drain(BBConfig.steamPerGen, false);
+            powerGen = energyStorage.receiveEnergy(2*steamUsed, true);
+        } else {
+            steamUsed = (int)Math.ceil(BBConfig.steamPerGen * (.5 * rotorCount - 1)) + BBConfig.steamPerGen;
+            tankDrained = tankSteam.drain(steamUsed, true);
+            powerGen = energyStorage.receiveEnergy(2*steamUsed, false);
+        }
+        return (tankDrained != null && powerGen == 2*steamUsed);
     }
 
     @Override

@@ -22,6 +22,9 @@ public class BBConfig extends ConcreteConfig {
     @ConfigValue(type = Property.Type.INTEGER, category = "BoilerUsage", comment = "How much steam a pump will auto-output a tick. Can still be extracted from faster with a machine.")
     public static int pumpDrain = 500;
 
+    @ConfigValue(type = Property.Type.INTEGER, category = "TurbineUsage", comment = "How much steam will be consumed per fueltick. RF generation will always be 2x the steam cost.")
+    public static int steamPerGen = 40;
+
     @ConfigValue(type = Property.Type.INTEGER, category = "Multiblock", comment = "The maximum amount of blocks that can be added to a standard multiblock. Some controllers may have different maxima. Includes all of the multiblock's components.")
     public static int defaultMaxMultiblock = 1000;
     @ConfigValue(type = Property.Type.INTEGER, category = "Multiblock", comment = "The minimum amount of blocks that can be added to a standard multiblock. Some controllers may have different minima. Includes all of the multiblock's components. Set to 0 for no minimum.")
