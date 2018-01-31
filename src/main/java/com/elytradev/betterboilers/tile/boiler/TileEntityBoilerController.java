@@ -6,6 +6,7 @@ import com.elytradev.betterboilers.tile.TileEntityMultiblockController;
 import com.elytradev.betterboilers.util.BBConfig;
 import com.elytradev.concrete.inventory.*;
 import com.google.common.base.Predicates;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -329,6 +330,12 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
         } else {
             return super.getCapability(capability, facing);
         }
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+        if (oldState.getBlock()==newState.getBlock()) return false;
+        else return super.shouldRefresh(world, pos, oldState, newState);
     }
 
 }
