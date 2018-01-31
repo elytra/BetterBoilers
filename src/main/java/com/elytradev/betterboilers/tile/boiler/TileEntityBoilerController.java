@@ -64,6 +64,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
         this.tankSteam = new ConcreteFluidTank(500).withFillValidator((it)->false);
         tankWater.listen(this::markDirty);
         tankSteam.listen(this::markDirty);
+        inv.listen(this::markDirty);
     }
 
     public void update() {

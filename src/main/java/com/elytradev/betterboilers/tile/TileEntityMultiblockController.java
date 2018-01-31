@@ -38,7 +38,7 @@ public abstract class TileEntityMultiblockController extends TileEntity {
         int itr = 0;
         while (!queue.isEmpty()) {
             if (itr > getMaxBlocksPerMultiblock()) {
-                if (world.getBlockState(this.getPos()) instanceof BlockBoilerController) {
+                if (world.getBlockState(this.getPos()).getBlock() == ModBlocks.BOILER_CONTROLLER) {
                     setControllerStatus(TileEntityBoilerController.ControllerStatus.ERRORED, "msg.bb.tooBig");
                 } else {
                     setControllerStatus(TileEntityTurbineController.ControllerStatus.ERRORED, "msg.bb.tooBig");
@@ -66,7 +66,7 @@ public abstract class TileEntityMultiblockController extends TileEntity {
         }
 
         if (!validator.test(world, members)) {
-            if (world.getBlockState(this.getPos()) instanceof BlockBoilerController) {
+            if (world.getBlockState(this.getPos()).getBlock() == ModBlocks.BOILER_CONTROLLER) {
                 setControllerStatus(TileEntityBoilerController.ControllerStatus.ERRORED, status);
             } else {
                 setControllerStatus(TileEntityTurbineController.ControllerStatus.ERRORED, status);
@@ -75,7 +75,7 @@ public abstract class TileEntityMultiblockController extends TileEntity {
         }
 
         onAssemble(world, members);
-        if (world.getBlockState(this.getPos()) instanceof BlockBoilerController) {
+        if (world.getBlockState(this.getPos()).getBlock() == ModBlocks.BOILER_CONTROLLER) {
             setControllerStatus(TileEntityBoilerController.ControllerStatus.ACTIVE, "msg.bb.noIssue");
         } else {
             setControllerStatus(TileEntityTurbineController.ControllerStatus.ACTIVE, "msg.bb.noIssue");
@@ -85,13 +85,13 @@ public abstract class TileEntityMultiblockController extends TileEntity {
     public void setControllerStatus( ControllerStatus state, String status) {
         errorReason = new TextComponentTranslation(status);
         if (state == ControllerStatus.ERRORED) {
-            if (world.getBlockState(this.getPos()) instanceof  BlockBoilerController) {
+            if (world.getBlockState(this.getPos()).getBlock() == ModBlocks.BOILER_CONTROLLER) {
                 world.setBlockState(this.getPos(), ModBlocks.BOILER_CONTROLLER.getDefaultState().withProperty(BlockBoilerController.ACTIVE, false));
             } else {
                 world.setBlockState(this.getPos(), ModBlocks.TURBINE_CONTROLLER.getDefaultState().withProperty(BlockTurbineController.ACTIVE, false));
             }
         } else {
-            if (world.getBlockState(this.getPos()) instanceof  BlockBoilerController) {
+            if (world.getBlockState(this.getPos()).getBlock() == ModBlocks.BOILER_CONTROLLER) {
                 world.setBlockState(this.getPos(), ModBlocks.BOILER_CONTROLLER.getDefaultState().withProperty(BlockBoilerController.ACTIVE, true));
             } else {
                 world.setBlockState(this.getPos(), ModBlocks.TURBINE_CONTROLLER.getDefaultState().withProperty(BlockTurbineController.ACTIVE, true));
