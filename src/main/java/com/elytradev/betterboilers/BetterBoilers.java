@@ -42,7 +42,7 @@ public class BetterBoilers {
     public static final String name  = "Better Boilers";
     public static final String version = "@VERSION@";
     public static BBConfig config;
-    public static boolean hasBrass = !OreDictionary.getOres("plateBrass").isEmpty() || !OreDictionary.getOres("ingotBrass").isEmpty();
+    public static boolean hasBrass;
 
     @Mod.Instance(modId)
     public static BetterBoilers instance;
@@ -118,6 +118,7 @@ public class BetterBoilers {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        hasBrass = !OreDictionary.getOres("plateBrass").isEmpty() || !OreDictionary.getOres("ingotBrass").isEmpty();
         if (hasBrass) {
             BBLog.info("Brass is in the pack! Things are getting pretty heated~");
         } else {
