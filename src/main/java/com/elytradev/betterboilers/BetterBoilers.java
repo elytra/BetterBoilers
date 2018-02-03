@@ -31,6 +31,7 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
 
@@ -41,6 +42,7 @@ public class BetterBoilers {
     public static final String name  = "Better Boilers";
     public static final String version = "@VERSION@";
     public static BBConfig config;
+    public static boolean hasBrass = !OreDictionary.getOres("plateBrass").isEmpty() || !OreDictionary.getOres("ingotBrass").isEmpty();
 
     @Mod.Instance(modId)
     public static BetterBoilers instance;
@@ -116,6 +118,11 @@ public class BetterBoilers {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        if (hasBrass) {
+            BBLog.info("Brass is in the pack! Things are getting pretty heated~");
+        } else {
+            BBLog.info("Hey, where'd the brass go? I guess we'll have to use something else.");
+        }
 
     }
 
