@@ -4,6 +4,8 @@ import com.elytradev.betterboilers.block.boiler.IBoilerBlock;
 import com.elytradev.betterboilers.block.ModBlocks;
 import com.elytradev.betterboilers.tile.TileEntityMultiblockController;
 import com.elytradev.betterboilers.util.BBConfig;
+import com.elytradev.betterboilers.util.FluidAccess;
+import com.elytradev.betterboilers.util.ReadableDoubleTank;
 import com.elytradev.concrete.inventory.*;
 import com.google.common.base.Predicates;
 import net.minecraft.block.state.IBlockState;
@@ -24,6 +26,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
@@ -34,6 +37,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
 
     public ConcreteFluidTank tankWater;
     public ConcreteFluidTank tankSteam;
+    private ReadableDoubleTank cap;
     public ConcreteItemStorage inv;
     private int boilerBlockCount = 0;
     private int fireboxBlockCount = 0;
@@ -63,6 +67,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
                 .withName(ModBlocks.BOILER_CONTROLLER.getUnlocalizedName() + ".name");;
         this.tankWater = new ConcreteFluidTank(1000).withFillValidator((it)->(it.getFluid() == FluidRegistry.WATER));
         this.tankSteam = new ConcreteFluidTank(500).withFillValidator((it)->false);
+        this.cap = new ReadableDoubleTank(tankWater, tankSteam);
         tankWater.listen(this::markDirty);
         tankSteam.listen(this::markDirty);
         inv.listen(this::markDirty);
@@ -317,9 +322,8 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return true;
-        } else {
-            return super.hasCapability(capability, facing);
-        }
+        } else
+            return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @Override
@@ -327,6 +331,8 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return (T) new ValidatedItemHandlerView(inv);
+        } else if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+            return (T) cap;
         } else {
             return super.getCapability(capability, facing);
         }
