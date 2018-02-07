@@ -52,7 +52,7 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
 
     public TileEntityTurbineController() {
         this.tankSteam = new ConcreteFluidTank(500).withFillValidator((it)->(it.getFluid() == ModBlocks.FLUID_STEAM));
-        this.energyStorage = new ObservableEnergyStorage(100_000, 0, 800);
+        this.energyStorage = new ObservableEnergyStorage(100_000, 0, BBConfig.turbineOut);
         this.inv = new ConcreteItemStorage(0);
         tankSteam.listen(this::markDirty);
         energyStorage.listen(this::markDirty);
@@ -71,14 +71,8 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
         if (!world.isRemote) {
             if (rotorCount > 0) {
                 if (canProcess()) {
-                    if (rotorCount == 1) {
-                        tankSteam.drain(BBConfig.steamPerGen, true);
-                        energyStorage.receiveEnergy(2 * BBConfig.steamPerGen, false);
-                    } else {
-                        int steamUsed = (int)Math.ceil(BBConfig.steamPerGen * (.5 * rotorCount - 1)) + BBConfig.steamPerGen;
-                        tankSteam.drain(steamUsed, true);
-                        energyStorage.receiveEnergy(2*steamUsed, false);
-                    }
+                    tankSteam.drain(BBConfig.steamPerGen, true);
+                    energyStorage.generateEnergy(2 * BBConfig.steamPerGen, false);
                 }
             }
         }
@@ -285,19 +279,9 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
     }
 
     private boolean canProcess() {
-        FluidStack tankDrained;
-        int powerGen;
-        int steamUsed;
-        if (rotorCount == 1) {
-            steamUsed = BBConfig.steamPerGen;
-            tankDrained = tankSteam.drain(BBConfig.steamPerGen, false);
-            powerGen = energyStorage.receiveEnergy(2*steamUsed, true);
-        } else {
-            steamUsed = (int)Math.ceil(BBConfig.steamPerGen * (.5 * rotorCount - 1)) + BBConfig.steamPerGen;
-            tankDrained = tankSteam.drain(steamUsed, true);
-            powerGen = energyStorage.receiveEnergy(2*steamUsed, false);
-        }
-        return (tankDrained != null && powerGen == 2*steamUsed);
+        FluidStack tankDrained = tankSteam.drain(BBConfig.steamPerGen, false);
+        int powerGen = energyStorage.generateEnergy(2*BBConfig.steamPerGen, true);
+        return (tankDrained != null && powerGen == 2*BBConfig.steamPerGen);
     }
 
     @Override
@@ -308,7 +292,14 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
 
     @Override
     public IInventory getContainerInventory() {
-        return new ValidatedInventoryView(inv);
+        ValidatedInventoryView view = new ValidatedInventoryView(inv);
+        if(world.isRemote) {
+            return view;
+        }
+        else {
+            return view.withField(0, () -> energyStorage.getEnergyStored())
+                    .withField(1, () -> energyStorage.getMaxEnergyStored());
+        }
     }
 
     public ConcreteFluidTank getTankSteam() {

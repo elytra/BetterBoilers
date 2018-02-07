@@ -1,12 +1,16 @@
 package com.elytradev.betterboilers.tile.turbine;
 
+import com.elytradev.betterboilers.util.BBConfig;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
-public class TileEntityTurbinePowerTap extends TileEntityTurbinePart implements ITurbinePart {
+public class TileEntityTurbinePowerTap extends TileEntityTurbinePart implements ITurbinePart, ITickable {
     private TileEntityTurbineController controller;
 
     @Override
@@ -18,6 +22,23 @@ public class TileEntityTurbinePowerTap extends TileEntityTurbinePart implements 
     @Override
     public void setController(TileEntityTurbineController controller) {
         this.controller = controller;
+    }
+
+    public void update() {
+        if (world.isRemote || !hasWorld() || !hasController()) return;
+        for (EnumFacing side : EnumFacing.values()) {
+            TileEntity tile = world.getTileEntity(getPos().offset(side));
+            if (tile == null || !tile.hasCapability(CapabilityEnergy.ENERGY, side.getOpposite())) {
+                return;
+            }
+
+            IEnergyStorage cap = tile.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+            int energyTransfer = controller.energyStorage.extractEnergy(BBConfig.turbineOut, true);
+            if (energyTransfer != 0) {
+                int qty = cap.receiveEnergy(BBConfig.turbineOut, false);
+                if (qty > 0) controller.energyStorage.extractEnergy(qty, false);
+            }
+        }
     }
 
     @Override

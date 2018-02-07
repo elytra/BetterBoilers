@@ -48,6 +48,14 @@ public class ObservableEnergyStorage extends EnergyStorage implements ITransferR
         return result;
     }
 
+    public int generateEnergy(int maxReceive, boolean simulate) {
+        int energyReceived = Math.min(capacity - energy, maxReceive);
+        if (!simulate)
+            energy += energyReceived;
+        if (!simulate && energyReceived!=0) markDirty();
+        return energyReceived;
+    }
+
     @Override
     public int extractEnergy(int maxExtract, boolean simulate) {
         if (maxExtract<0) return 0;
