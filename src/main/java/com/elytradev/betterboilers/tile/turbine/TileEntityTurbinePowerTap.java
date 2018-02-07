@@ -29,7 +29,7 @@ public class TileEntityTurbinePowerTap extends TileEntityTurbinePart implements 
         for (EnumFacing side : EnumFacing.values()) {
             TileEntity tile = world.getTileEntity(getPos().offset(side));
             if (tile == null || !tile.hasCapability(CapabilityEnergy.ENERGY, side.getOpposite())) {
-                return;
+                continue;
             }
 
             IEnergyStorage cap = tile.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
