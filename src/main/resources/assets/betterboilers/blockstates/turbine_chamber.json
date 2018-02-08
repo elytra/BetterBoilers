@@ -2,15 +2,16 @@
 	"forge_marker": 1,
 	"defaults": {
 		"textures": {
-			"all": "minecraft:blocks/iron_block"
+			"side": "beterboilers:blocks/turbine-side",
+			"end": "betterboilers:blocks/turbine-top"
 		}
 	},
 	"variants": {
 		"normal": {
-			"model": "cube_all"
+			"model": "cube_column"
 		},
 		"inventory": {
-			"model": "cube_all"
+			"model": "cube_column"
 		}
 	}
 }
