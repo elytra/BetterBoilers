@@ -23,11 +23,11 @@ public class ModBlocks {
     public static final BlockFireboxHatch HATCH = new BlockFireboxHatch();
     public static final BlockBoilerController BOILER_CONTROLLER = new BlockBoilerController();
     public static final BlockTurbineChamber CHAMBER = new BlockTurbineChamber();
-    public static final BlockTurbineCap CAP = new BlockTurbineCap();
-    public static final BlockTurbineRotor ROTOR = new BlockTurbineRotor();
-    public static final BlockTurbineGasket GASKET = new BlockTurbineGasket();
+    public static final BlockTurbineCap CAP = new BlockTurbineCap(); //needs proper texture, proper calculation
+    public static final BlockTurbineRotor ROTOR = new BlockTurbineRotor(); //needs proper texture
+    public static final BlockTurbineGasket GASKET = new BlockTurbineGasket(); //needs proper texture
     public static final BlockTurbinePressureValve PRESSURE_VALVE = new BlockTurbinePressureValve();
-    public static final BlockTurbinePowerTap POWER_TAP = new BlockTurbinePowerTap();
+    public static final BlockTurbinePowerTap POWER_TAP = new BlockTurbinePowerTap(); //needs proper texture
     public static final BlockTurbineController TURBINE_CONTROLLER = new BlockTurbineController();
 
     public static final Fluid FLUID_STEAM = new Fluid("steam",

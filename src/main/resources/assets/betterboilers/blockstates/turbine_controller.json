@@ -2,8 +2,8 @@
 	"forge_marker": 1,
 	"defaults": {
 		"textures": {
-			"side": "minecraft:blocks/furnace_front_off",
-			"end": "minecraft:blocks/furnace_top"
+			"side": "betterboilers:blocks/turbine-control-error",
+			"end": "betterboilers:blocks/turbine-top"
 		}
 	},
 	"variants": {
@@ -11,26 +11,26 @@
 			"true": {
 				"model": "minecraft:cube_column",
 				"textures": {
-					"side": "minecraft:blocks/furnace_front_on"
+					"side": "betterboilers:blocks/turbine-control"
 				}
 			},
 			"false": {
 				"model": "minecraft:cube_column",
 				"textures": {
-					"side": "minecraft:blocks/furnace_front_off"
+					"side": "betterboilers:blocks/turbine-control-error"
 				}
 			}
 		},
 		"normal": {
 			"model": "minecraft:cube_column",
 			"textures": {
-				"side": "minecraft:blocks/furnace_front_off"
+				"side": "betterboilers:blocks/turbine-control-error"
 			}
 		},
 		"inventory": {
 			"model": "minecraft:cube_column",
 			"textures": {
-				"side": "minecraft:blocks/furnace_front_on"
+				"side": "betterboilers:blocks/turbine-control"
 			}
 		}
 	}

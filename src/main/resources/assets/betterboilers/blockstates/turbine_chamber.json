@@ -2,7 +2,7 @@
 	"forge_marker": 1,
 	"defaults": {
 		"textures": {
-			"side": "beterboilers:blocks/turbine-side",
+			"side": "betterboilers:blocks/turbine-side",
 			"end": "betterboilers:blocks/turbine-top"
 		}
 	},
