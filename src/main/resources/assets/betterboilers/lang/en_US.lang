@@ -36,6 +36,7 @@ msg.bb.badChamber=Misplaced chamber component. (no chamber components on cap lev
 msg.bb.badCap=Misplaced cap component. (cap components only on the top level)
 msg.bb.badGasket=Misformed gasket. (gasket must form a solid ring around the outside of the top level, check manual [NYI] for example)
 msg.bb.badTurbineController=Misplaced controller. (must be part of chamber)
+msg.bb.tooManyRotors=Too many rotors. (rotor blocks may only make up half of the turbine cap)
 msg.bb.noIssue=No issues
 
 #misc

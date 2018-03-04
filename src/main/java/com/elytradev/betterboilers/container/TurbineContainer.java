@@ -23,10 +23,12 @@ public class TurbineContainer extends ConcreteContainer {
         WBar energyBar = new WBar(energyBG, energyFG, container, 0, 1, WBar.Direction.UP).withTooltip("%d/%d RF");
         WImage steamBar = new WImage(new ResourceLocation(BetterBoilers.modId, "textures/gui/steam_bar.png"));
         WImage steamBar1 = new WImage(new ResourceLocation(BetterBoilers.modId, "textures/gui/steam_bar.png"));
+        WFieldedLabel rfPerTick = new WFieldedLabel(container, 2, -1, "%f RF/t");
         panel.add(playerInv, 0, 87);
-        panel.add(tankSteam, 38, 26, 18, 40);
+        panel.add(tankSteam, 36, 26, 18, 40);
         panel.add(energyBar, 108, 22, 18, 48);
-        panel.add(steamBar, 38, 22, 18, 4);
-        panel.add(steamBar1, 38, 66, 18, 4);
+        panel.add(steamBar, 36, 22, 18, 4);
+        panel.add(steamBar1, 36, 66, 18, 4);
+        panel.add(rfPerTick, 0, 9);
     }
 }

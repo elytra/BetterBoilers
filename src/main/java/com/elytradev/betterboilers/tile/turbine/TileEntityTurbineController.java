@@ -40,6 +40,7 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
     public int rotorCount = 0;
     private static final int RESCAN_TIME = 100;
     private int currentScanTime = 100;
+    private int steamPerGen = 40;
 
     protected int getMaxBlocksPerMultiblock() { return BBConfig.defaultMaxMultiblock; }
 
@@ -53,7 +54,7 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
     public TileEntityTurbineController() {
         this.tankSteam = new ConcreteFluidTank(500).withFillValidator((it)->(it.getFluid() == ModBlocks.FLUID_STEAM));
         this.energyStorage = new ObservableEnergyStorage(100_000, 0, BBConfig.turbineOut);
-        this.inv = new ConcreteItemStorage(0);
+        this.inv = new ConcreteItemStorage(0).withName(ModBlocks.TURBINE_CONTROLLER.getUnlocalizedName() + ".name");;
         tankSteam.listen(this::markDirty);
         energyStorage.listen(this::markDirty);
     }
@@ -66,13 +67,13 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
             currentScanTime = 0;
         }
         currentScanTime++;
-        //this.energyStorage.tick();
 
         if (!world.isRemote) {
             if (rotorCount > 0) {
                 if (canProcess()) {
-                    tankSteam.drain(BBConfig.steamPerGen, true);
-                    energyStorage.generateEnergy(2 * BBConfig.steamPerGen, false);
+
+                    tankSteam.drain(steamPerGen, true);
+                    energyStorage.generateEnergy(2 * steamPerGen, false);
                 }
             }
         }
@@ -86,6 +87,8 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
         int maxZ = Integer.MIN_VALUE;
         int minZ = Integer.MAX_VALUE;
         int validBlockCount = 0;
+        int capCount = 0;
+        int scanRotorCount = 0;
         for(BlockPos pos : blocks){
             maxY = Math.max(pos.getY(), maxY);
             minY = Math.min(pos.getY(), minY);
@@ -133,13 +136,21 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 }
                 validBlockCount++;
             }
-            if (world.getBlockState(pos).getBlock() == ModBlocks.ROTOR
-                    || world.getBlockState(pos).getBlock() == ModBlocks.CAP
+            if (world.getBlockState(pos).getBlock() == ModBlocks.CAP
                     || world.getBlockState(pos).getBlock() == ModBlocks.POWER_TAP) {
                 if (pos.getY() != maxY) {
                     status = "msg.bb.badCap";
                     return false;
                 }
+                capCount++;
+                validBlockCount++;
+            }
+            if (world.getBlockState(pos).getBlock() == ModBlocks.ROTOR) {
+                if (pos.getY() != maxY) {
+                    status = "msg.bb.badCap";
+                    return false;
+                }
+                scanRotorCount++;
                 validBlockCount++;
             }
         }
@@ -167,6 +178,10 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 return false;
             }
         }
+        if (scanRotorCount > capCount) {
+            status = "msg.bb.tooManyRotors";
+            return false;
+        }
         if (validBlockCount < BBConfig.defaultMinMultiblock) {
             status = "msg.bb.tooSmall";
             BBLog.info(validBlockCount);
@@ -186,8 +201,7 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                     || world.getBlockState(pos).getBlock() == ModBlocks.TURBINE_CONTROLLER) {
                 chamberBlockCount++;
             }
-            if (world.getBlockState(pos).getBlock() == ModBlocks.ROTOR
-                    || world.getBlockState(pos).getBlock() == ModBlocks.CAP
+            if ( world.getBlockState(pos).getBlock() == ModBlocks.CAP
                     || world.getBlockState(pos).getBlock() == ModBlocks.POWER_TAP) {
                 capBlockCount++;
             }
@@ -200,6 +214,10 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 ((TileEntityTurbinePart)te).setController(this);
             }
         }
+        steamPerGen = (int)(Math.log10(rotorCount*(9/BBConfig.rotorBaseCount)+1) * BBConfig.steamBaseUse);
+        BBLog.info(rotorCount);
+        BBLog.info(Math.log10(rotorCount*(9/BBConfig.rotorBaseCount)+1));
+        BBLog.info(steamPerGen);
         tankSteam.setCapacity(500*chamberBlockCount);
         markDirty();
     }
@@ -212,6 +230,7 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 ((TileEntityTurbinePart) te).setController(null);
             }
         }
+        rotorCount = 0;
         markDirty();
     }
 
@@ -279,9 +298,9 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
     }
 
     private boolean canProcess() {
-        FluidStack tankDrained = tankSteam.drain(BBConfig.steamPerGen, false);
-        int powerGen = energyStorage.generateEnergy(2*BBConfig.steamPerGen, true);
-        return (tankDrained != null && powerGen == 2*BBConfig.steamPerGen);
+        FluidStack tankDrained = tankSteam.drain(steamPerGen, false);
+        int powerGen = energyStorage.generateEnergy(2*steamPerGen, true);
+        return (tankDrained != null && powerGen == 2*steamPerGen);
     }
 
     @Override
@@ -298,7 +317,8 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
         }
         else {
             return view.withField(0, () -> energyStorage.getEnergyStored())
-                    .withField(1, () -> energyStorage.getMaxEnergyStored());
+                    .withField(1, () -> energyStorage.getMaxEnergyStored())
+                    .withField(2, () -> 2*steamPerGen);
         }
     }
 

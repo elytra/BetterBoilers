@@ -22,8 +22,10 @@ public class BBConfig extends ConcreteConfig {
     @ConfigValue(type = Property.Type.INTEGER, category = "BoilerUsage", comment = "How much steam a pump will auto-output a tick. Can still be extracted from faster with a machine.")
     public static int pumpDrain = 500;
 
-    @ConfigValue(type = Property.Type.INTEGER, category = "TurbineUsage", comment = "How much steam will be consumed per fueltick. RF generation will always be 2x the steam cost.")
-    public static int steamPerGen = 40;
+    @ConfigValue(type = Property.Type.INTEGER, category = "TurbineUsage", comment = "base amount of rotors used to calculate a turbine's diminishing returns. RF generation will always be 2x the steam cost.")
+    public static int rotorBaseCount = 4;
+    @ConfigValue(type = Property.Type.INTEGER, category = "TurbineUsage", comment = "The amount of steam consumed in a turbine with rotorBaseCount rotors. Used to calculate diminishing returns. RF generation will always be 2x the steam cost.")
+    public static int steamBaseUse = 40;
     @ConfigValue(type = Property.Type.INTEGER, category = "TurbineUsage", comment = "How much RF/T the turbine power tap can transfer.")
     public static int turbineOut = 400;
 

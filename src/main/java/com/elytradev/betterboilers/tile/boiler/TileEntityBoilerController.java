@@ -64,7 +64,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
         this.inv = new ConcreteItemStorage(3).withValidators(Validators.FURNACE_FUELS,
                 Validators.FURNACE_FUELS,
                 Validators.FURNACE_FUELS)
-                .withName(ModBlocks.BOILER_CONTROLLER.getUnlocalizedName() + ".name");;
+                .withName(ModBlocks.BOILER_CONTROLLER.getUnlocalizedName() + ".name");
         this.tankWater = new ConcreteFluidTank(1000).withFillValidator((it)->(it.getFluid() == FluidRegistry.WATER));
         this.tankSteam = new ConcreteFluidTank(500).withFillValidator((it)->false);
         this.cap = new ReadableDoubleTank(tankWater, tankSteam);
