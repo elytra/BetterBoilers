@@ -214,10 +214,10 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 ((TileEntityTurbinePart)te).setController(this);
             }
         }
-        steamPerGen = (int)(Math.log10(rotorCount*(9/BBConfig.rotorBaseCount)+1) * BBConfig.steamBaseUse);
-        BBLog.info(rotorCount);
-        BBLog.info(Math.log10(rotorCount*(9/BBConfig.rotorBaseCount)+1));
-        BBLog.info(steamPerGen);
+        steamPerGen = (int)(Math.log10(rotorCount*(9/BBConfig.rotorBaseCount+0.5)) * BBConfig.steamBaseUse);
+//        BBLog.info("Rotor count: "+rotorCount);
+//        BBLog.info("Log result: "+Math.log10(rotorCount*(9/BBConfig.rotorBaseCount+0.5)));
+//        BBLog.info("Steam use: "+steamPerGen);
         tankSteam.setCapacity(500*chamberBlockCount);
         markDirty();
     }
