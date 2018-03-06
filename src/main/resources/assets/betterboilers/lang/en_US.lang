@@ -25,6 +25,22 @@ tooltip.bb.inspector.1=Sneak-use on a controller to check a boiler's status.
 tooltip.bb.boiler_pump.0=Continuous steam production and auto-eject!
 tooltip.bb.boiler_pump.1=However, results in lower overall production rates.
 
+#temp tooltips for NYI stuff
+tooltip.bb.turbine_controller.0=It works, I promise!
+tooltip.bb.turbine_controller.1=Recipes and some textures are NYI, but everything else is perfectly good to go!
+tooltip.bb.turbine_rotor.0=It works, I promise!
+tooltip.bb.turbine_rotor.1=Recipes and some textures (including this one) are NYI, but everything else is perfectly good to go!
+tooltip.bb.turbine_chamber.0=It works, I promise!
+tooltip.bb.turbine_chamber.1=Recipes and some textures are NYI, but everything else is perfectly good to go!
+tooltip.bb.turbine_power_tap.0=It works, I promise!
+tooltip.bb.turbine_power_tap.1=Recipes and some textures (including this one) are NYI, but everything else is perfectly good to go!
+tooltip.bb.turbine_pressure_valve.0=It works, I promise!
+tooltip.bb.turbine_pressure_valve.1=Recipes and some textures are NYI, but everything else is perfectly good to go!
+tooltip.bb.turbine_cap.0=It works, I promise!
+tooltip.bb.turbine_cap.1=Recipes and some textures (including this one) are NYI, but everything else is perfectly good to go!
+tooltip.bb.turbine_gasket.0=It works, I promise!
+tooltip.bb.turbine_gasket.1=Recipes and some textures (including this one) are NYI, but everything else is perfectly good to go!
+
 #messages
 msg.bb.tooBig=Multiblock too big. (default max size 1000)
 msg.bb.tooSmall=Multiblock too small. (default min size 36)
