@@ -37,12 +37,8 @@ public abstract class TileEntityMultiblockController extends TileEntity {
 
         int itr = 0;
         while (!queue.isEmpty()) {
-            if (itr > getMaxBlocksPerMultiblock()) {
-                if (world.getBlockState(this.getPos()).getBlock() == ModBlocks.BOILER_CONTROLLER) {
-                    setControllerStatus(TileEntityBoilerController.ControllerStatus.ERRORED, "msg.bb.tooBig");
-                } else {
-                    setControllerStatus(TileEntityTurbineController.ControllerStatus.ERRORED, "msg.bb.tooBig");
-                }
+            if (members.size() > getMaxBlocksPerMultiblock()) {
+                setControllerStatus(TileEntityMultiblockController.ControllerStatus.ERRORED, "msg.bb.tooBig");
                 return;
             }
             BlockPos pos = queue.remove(0);
@@ -66,20 +62,12 @@ public abstract class TileEntityMultiblockController extends TileEntity {
         }
 
         if (!validator.test(world, members)) {
-            if (world.getBlockState(this.getPos()).getBlock() == ModBlocks.BOILER_CONTROLLER) {
-                setControllerStatus(TileEntityBoilerController.ControllerStatus.ERRORED, status);
-            } else {
-                setControllerStatus(TileEntityTurbineController.ControllerStatus.ERRORED, status);
-            }
+            setControllerStatus(TileEntityMultiblockController.ControllerStatus.ERRORED, status);
             return;
         }
 
         onAssemble(world, members);
-        if (world.getBlockState(this.getPos()).getBlock() == ModBlocks.BOILER_CONTROLLER) {
-            setControllerStatus(TileEntityBoilerController.ControllerStatus.ACTIVE, "msg.bb.noIssue");
-        } else {
-            setControllerStatus(TileEntityTurbineController.ControllerStatus.ACTIVE, "msg.bb.noIssue");
-        }
+        setControllerStatus(TileEntityMultiblockController.ControllerStatus.ACTIVE, "msg.bb.noIssue");
     }
 
     public void setControllerStatus( ControllerStatus state, String status) {
