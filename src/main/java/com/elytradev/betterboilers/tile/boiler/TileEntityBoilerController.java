@@ -1,5 +1,6 @@
 package com.elytradev.betterboilers.tile.boiler;
 
+import com.elytradev.betterboilers.block.boiler.BlockBoilerController;
 import com.elytradev.betterboilers.block.boiler.IBoilerBlock;
 import com.elytradev.betterboilers.block.ModBlocks;
 import com.elytradev.betterboilers.tile.TileEntityMultiblockController;
@@ -20,6 +21,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
@@ -342,6 +344,15 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
         if (oldState.getBlock()==newState.getBlock()) return false;
         else return super.shouldRefresh(world, pos, oldState, newState);
+    }
+
+    public void setControllerStatus(ControllerStatus state, String status) {
+        errorReason = new TextComponentTranslation(status);
+        if (state == ControllerStatus.ERRORED) {
+            world.setBlockState(this.getPos(), ModBlocks.BOILER_CONTROLLER.getDefaultState().withProperty(BlockBoilerController.ACTIVE, false));
+        } else {
+            world.setBlockState(this.getPos(), ModBlocks.BOILER_CONTROLLER.getDefaultState().withProperty(BlockBoilerController.ACTIVE, true));
+        }
     }
 
 }

@@ -70,22 +70,7 @@ public abstract class TileEntityMultiblockController extends TileEntity {
         setControllerStatus(TileEntityMultiblockController.ControllerStatus.ACTIVE, "msg.bb.noIssue");
     }
 
-    public void setControllerStatus( ControllerStatus state, String status) {
-        errorReason = new TextComponentTranslation(status);
-        if (state == ControllerStatus.ERRORED) {
-            if (world.getBlockState(this.getPos()).getBlock() == ModBlocks.BOILER_CONTROLLER) {
-                world.setBlockState(this.getPos(), ModBlocks.BOILER_CONTROLLER.getDefaultState().withProperty(BlockBoilerController.ACTIVE, false));
-            } else {
-                world.setBlockState(this.getPos(), ModBlocks.TURBINE_CONTROLLER.getDefaultState().withProperty(BlockTurbineController.ACTIVE, false));
-            }
-        } else {
-            if (world.getBlockState(this.getPos()).getBlock() == ModBlocks.BOILER_CONTROLLER) {
-                world.setBlockState(this.getPos(), ModBlocks.BOILER_CONTROLLER.getDefaultState().withProperty(BlockBoilerController.ACTIVE, true));
-            } else {
-                world.setBlockState(this.getPos(), ModBlocks.TURBINE_CONTROLLER.getDefaultState().withProperty(BlockTurbineController.ACTIVE, true));
-            }
-        }
-    }
+    public void setControllerStatus(ControllerStatus state, String status) { }
 
     public abstract void onAssemble(World world, List<BlockPos> blocks);
 

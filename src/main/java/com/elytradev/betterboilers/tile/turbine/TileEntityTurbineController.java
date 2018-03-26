@@ -1,6 +1,7 @@
 package com.elytradev.betterboilers.tile.turbine;
 
 import com.elytradev.betterboilers.BBLog;
+import com.elytradev.betterboilers.block.turbine.BlockTurbineController;
 import com.elytradev.betterboilers.block.turbine.ITurbineBlock;
 import com.elytradev.betterboilers.block.ModBlocks;
 import com.elytradev.betterboilers.tile.TileEntityMultiblockController;
@@ -21,6 +22,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
@@ -328,6 +330,15 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
 
     public ObservableEnergyStorage getEnergyStorage() {
         return energyStorage;
+    }
+
+    public void setControllerStatus(ControllerStatus state, String status) {
+        errorReason = new TextComponentTranslation(status);
+        if (state == ControllerStatus.ERRORED) {
+            world.setBlockState(this.getPos(), ModBlocks.TURBINE_CONTROLLER.getDefaultState().withProperty(BlockTurbineController.ACTIVE, false));
+        } else {
+            world.setBlockState(this.getPos(), ModBlocks.TURBINE_CONTROLLER.getDefaultState().withProperty(BlockTurbineController.ACTIVE, true));
+        }
     }
 }
 
