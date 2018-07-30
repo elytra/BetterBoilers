@@ -113,7 +113,8 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 validBlockCount++;
             }
             if (world.getBlockState(pos).getBlock() == ModBlocks.CHAMBER
-                    || world.getBlockState(pos).getBlock() == ModBlocks.PRESSURE_VALVE) {
+                    || world.getBlockState(pos).getBlock() == ModBlocks.PRESSURE_VALVE
+                    || world.getBlockState(pos).getBlock() == ModBlocks.POWER_TAP) {
                 if (pos.getY() == maxY) {
                     status = "msg.bb.badChamber";
                     return false;
@@ -138,8 +139,7 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 }
                 validBlockCount++;
             }
-            if (world.getBlockState(pos).getBlock() == ModBlocks.CAP
-                    || world.getBlockState(pos).getBlock() == ModBlocks.POWER_TAP) {
+            if (world.getBlockState(pos).getBlock() == ModBlocks.CAP) {
                 if (pos.getY() != maxY) {
                     status = "msg.bb.badCap";
                     return false;
