@@ -56,7 +56,7 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
     public TileEntityTurbineController() {
         this.tankSteam = new ConcreteFluidTank(500).withFillValidator((it)->(it.getFluid() == ModBlocks.FLUID_STEAM));
         this.energyStorage = new ObservableEnergyStorage(100_000, 0, BBConfig.turbineOut);
-        this.inv = new ConcreteItemStorage(0).withName(ModBlocks.TURBINE_CONTROLLER.getUnlocalizedName() + ".name");;
+        this.inv = new ConcreteItemStorage(0).withName(ModBlocks.TURBINE_CONTROLLER.getUnlocalizedName() + ".name");
         tankSteam.listen(this::markDirty);
         energyStorage.listen(this::markDirty);
     }
@@ -122,18 +122,14 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 validBlockCount++;
             }
             if (world.getBlockState(pos).getBlock() == ModBlocks.GASKET) {
-                boolean goodGasketBlock = false;
                 if (pos.getY() != maxY) {
                     status = "msg.bb.badGasket";
                     return false;
                 }
-                if (pos.getX() == maxX
+                if (!(pos.getX() == maxX
                         || pos.getX() == minX
                         || pos.getZ() == maxZ
-                        || pos.getZ() == minZ) {
-                    goodGasketBlock = true;
-                }
-                if (!goodGasketBlock) {
+                        || pos.getZ() == minZ)) {
                     status = "msg.bb.badGasket";
                     return false;
                 }
