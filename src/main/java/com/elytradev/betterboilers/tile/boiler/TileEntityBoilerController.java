@@ -347,6 +347,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
     }
 
     public void setControllerStatus(ControllerStatus state, String status) {
+        //TODO: potential candidate for inventory-clobbering
         errorReason = new TextComponentTranslation(status);
         if (state == ControllerStatus.ERRORED) {
             world.setBlockState(this.getPos(), ModBlocks.BOILER_CONTROLLER.getDefaultState().withProperty(BlockBoilerController.ACTIVE, false));
