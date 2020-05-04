@@ -52,8 +52,7 @@ if (project.ext.language == 'kotlin') {
 } else if (project.ext.language == 'scala') {
 	apply plugin: 'scala'
 }
-apply plugin: 'net.minecraftforge.gra' +
-		'dle.forge'
+apply plugin: 'net.minecraftforge.gradle.forge'
 
 project.ext.package = project.ext.group+'.'+project.ext.projectName.toLowerCase()
 

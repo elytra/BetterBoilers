@@ -1,6 +1,5 @@
 package com.elytradev.betterboilers.item;
 
-import com.elytradev.betterboilers.BetterBoilers;
 import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
 

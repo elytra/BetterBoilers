@@ -1,19 +1,17 @@
 package com.elytradev.betterboilers.tile.boiler;
 
-import com.elytradev.betterboilers.tile.boiler.IBoilerPart;
-import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerController;
-import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerPart;
+import javax.annotation.Nullable;
+
 import com.elytradev.betterboilers.util.BBConfig;
 import com.elytradev.betterboilers.util.FluidAccess;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-import javax.annotation.Nullable;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 
 public class TileEntityBoilerPump extends TileEntityBoilerPart implements IBoilerPart, ITickable {
     private TileEntityBoilerController controller;

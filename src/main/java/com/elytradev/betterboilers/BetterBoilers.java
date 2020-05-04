@@ -35,7 +35,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
 
-
 @Mod(modid = BetterBoilers.modId, name = BetterBoilers.name, version = BetterBoilers.version)
 public class BetterBoilers {
     public static final String modId = "betterboilers";

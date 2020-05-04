@@ -1,14 +1,12 @@
 package com.elytradev.betterboilers.tile.boiler;
 
-import com.elytradev.betterboilers.tile.boiler.IBoilerPart;
-import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerController;
-import com.elytradev.betterboilers.tile.boiler.TileEntityBoilerPart;
+import javax.annotation.Nullable;
+
 import com.elytradev.concrete.inventory.ValidatedItemHandlerView;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import javax.annotation.Nullable;
+import net.minecraft.util.EnumFacing;
 
 public class TileEntityBoilerFireboxHatch extends TileEntityBoilerPart implements IBoilerPart {
     private TileEntityBoilerController controller;
