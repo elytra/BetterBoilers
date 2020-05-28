@@ -115,12 +115,14 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
         int minY = 255;
         int validBlockCount = 0;
         for(BlockPos pos : blocks) minY = Math.min(pos.getY(), minY);
+        //controller must be on the bottom layer
         if (this.pos.getY() != minY) {
             status = "msg.bb.badBoilerController";
             return false;
         }
 
         for (BlockPos pos : blocks) {
+            //cannot have more than one controller
             if (world.getTileEntity(pos) instanceof TileEntityMultiblockController) {
                 if (pos != this.getPos()) {
                     status = "msg.bb.tooManyControllers";
@@ -128,6 +130,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
                 }
                 validBlockCount++;
             }
+            //boiler blocks (including valve, vent, and pump) must not be on bottom layer
             if (world.getBlockState(pos).getBlock() == ModBlocks.BOILER
                     || world.getBlockState(pos).getBlock() == ModBlocks.VENT
                     || world.getBlockState(pos).getBlock() == ModBlocks.VALVE
@@ -138,6 +141,7 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
                 }
                 validBlockCount++;
             }
+            //firebox blocks (including hatches) must only be on bottom layer
             if (world.getBlockState(pos).getBlock() == ModBlocks.FIREBOX
                     || world.getBlockState(pos).getBlock() == ModBlocks.HATCH) {
                 if (pos.getY() != minY) {
@@ -147,10 +151,12 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
                 validBlockCount++;
             }
         }
+        //must be at least minimum size
         if (validBlockCount < BBConfig.defaultMinMultiblock) {
             status = "msg.bb.tooSmall";
             return false;
         }
+        //ok!
         return true;
     }
 
@@ -179,8 +185,8 @@ public class TileEntityBoilerController extends TileEntityMultiblockController i
                 ((TileEntityBoilerPart)te).setController(this);
             }
         }
-        tankWater.setCapacity(1000*boilerBlockCount);
-        tankSteam.setCapacity(500*boilerBlockCount);
+        tankWater.setCapacity(1000*boilerBlockCount); //TODO: might be causing voiding issues
+        tankSteam.setCapacity(500*boilerBlockCount); //TODO: might be causing voiding issues
         markDirty();
     }
 
