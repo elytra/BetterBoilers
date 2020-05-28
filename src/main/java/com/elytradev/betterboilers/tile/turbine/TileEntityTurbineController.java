@@ -91,6 +91,7 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
         int validBlockCount = 0;
         int capCount = 0;
         int scanRotorCount = 0;
+        //find the bounds of the multiblock
         for(BlockPos pos : blocks){
             maxY = Math.max(pos.getY(), maxY);
             minY = Math.min(pos.getY(), minY);
@@ -99,12 +100,14 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
             maxZ = Math.max(pos.getZ(), maxZ);
             minZ = Math.min(pos.getZ(), minZ);
         }
+        //controller must be on the top layer
         if (this.pos.getY() == maxY) {
             status = "msg.bb.badTurbineController";
             return false;
         }
 
         for (BlockPos pos : blocks) {
+            //can only have one controller
             if (world.getTileEntity(pos) instanceof TileEntityMultiblockController) {
                 if (pos != this.getPos()) {
                     status = "msg.bb.tooManyControllers";
@@ -112,6 +115,7 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 }
                 validBlockCount++;
             }
+            //chamber blocks (including pressure valves and power taps) must not be on the top layer
             if (world.getBlockState(pos).getBlock() == ModBlocks.CHAMBER
                     || world.getBlockState(pos).getBlock() == ModBlocks.PRESSURE_VALVE
                     || world.getBlockState(pos).getBlock() == ModBlocks.POWER_TAP) {
@@ -121,6 +125,7 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 }
                 validBlockCount++;
             }
+            //gaskets must be in a solid ring around the outside of the top layer (TODO: support for circular gaskets?)
             if (world.getBlockState(pos).getBlock() == ModBlocks.GASKET) {
                 if (pos.getY() != maxY) {
                     status = "msg.bb.badGasket";
@@ -135,6 +140,7 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 }
                 validBlockCount++;
             }
+            //caps must be on top layer
             if (world.getBlockState(pos).getBlock() == ModBlocks.CAP) {
                 if (pos.getY() != maxY) {
                     status = "msg.bb.badCap";
@@ -143,6 +149,7 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 capCount++;
                 validBlockCount++;
             }
+            //rotors must be on top layer
             if (world.getBlockState(pos).getBlock() == ModBlocks.ROTOR) {
                 if (pos.getY() != maxY) {
                     status = "msg.bb.badCap";
@@ -152,6 +159,7 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 validBlockCount++;
             }
         }
+        //verify that the gasket is in a full ring
         for (int i = minX; i <= maxX; i++) {
             BlockPos pos1 = new BlockPos(i, maxY, maxZ);
             BlockPos pos2 = new BlockPos(i, maxY, minZ);
@@ -176,15 +184,18 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 return false;
             }
         }
+        //can't have more than half the cap be rotors
         if (scanRotorCount > capCount) {
             status = "msg.bb.tooManyRotors";
             return false;
         }
+        //must be at least the minimum size
         if (validBlockCount < BBConfig.defaultMinMultiblock) {
             status = "msg.bb.tooSmall";
             BBLog.info(validBlockCount);
             return false;
         }
+        //ok!
         return true;
     }
 
@@ -212,6 +223,7 @@ public class TileEntityTurbineController extends TileEntityMultiblockController 
                 ((TileEntityTurbinePart)te).setController(this);
             }
         }
+        //curve for diminishing returns on amount of rotors, based around rotorBaseCount
         steamPerGen = (int)(Math.log10(rotorCount*(9/BBConfig.rotorBaseCount+0.5)) * BBConfig.steamBaseUse);
 //        BBLog.info("Rotor count: "+rotorCount);
 //        BBLog.info("Log result: "+Math.log10(rotorCount*(9/BBConfig.rotorBaseCount+0.5)));
