@@ -30,6 +30,7 @@ public class BoilerContainer extends ConcreteContainer {
         super(player, container);
         WPlainPanel panel = new WPlainPanel();
         setRootPanel(panel);
+        //Need to make this more configurable
         WItemSlot slotsFuel = WItemSlot.of(container, 0, 3, 1);
         WPanel playerInv = this.createPlayerInventoryPanel();
         WFluidBar tankWater = new WFluidBar(waterBG, waterFG, boiler.tankWater).withTooltip("%d/%d mB water");
@@ -54,9 +55,6 @@ public class BoilerContainer extends ConcreteContainer {
         panel.add(fuelTicks0, 11, 46, 14, 14);
         panel.add(fuelTicks1, 29, 46, 14, 14);
         panel.add(fuelTicks2, 47, 46, 14, 14);
-//        panel.add(fuelTicks0, 10, 46, 4, 14);
-//        panel.add(fuelTicks1, 15, 46, 4, 14);
-//        panel.add(fuelTicks2, 20, 46, 4, 14);
 
         if (boiler.pumpCount == 0) {
             panel.add(progressTicks, 75, 37, 24, 17);

@@ -13,6 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
+//Needs to become a ConnectedBlock so that pipes etc. visually connect to it.
 public class BlockBoilerValve extends BlockTileEntity<TileEntityBoilerValve> implements IBoilerBlock {
 
     protected String name;

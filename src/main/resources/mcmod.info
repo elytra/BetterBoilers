@@ -2,12 +2,13 @@
   {
     "modid": "betterboilers",
     "name": "Better Boilers",
-    "description": "Multiblock boilers and more!",
+    "description": "Multiblock Boilers and Power Generation",
     "version": "${version}",
     "mcversion": "${mcversion}",
     "url": "",
     "updateUrl": "",
     "authorList": [
+      "Gaiyamato",
       "b0undarybreaker",
       "Falkreon"
     ],
