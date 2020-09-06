@@ -8,6 +8,7 @@ import net.minecraftforge.fluids.BlockFluidClassic;
 public class BlockSteam extends BlockFluidClassic {
     protected String name;
 
+    //This needs to be a fluid, a gas and an energy type. Will move this out to the API for compat abstraction later - Gaiyamato
     public BlockSteam(Fluid fluid, String name) {
         super(fluid, Material.WATER);
         this.quantaPerBlock= 8;
