@@ -119,9 +119,9 @@ public class BetterBoilers {
     public void postInit(FMLPostInitializationEvent event) {
         hasBrass = !OreDictionary.getOres("plateBrass").isEmpty() || !OreDictionary.getOres("ingotBrass").isEmpty();
         if (hasBrass) {
-            BBLog.info("Brass is in the pack! Things are getting pretty heated~");
+            BBLog.info("Using advanced Brass recipes.");
         } else {
-            BBLog.info("Hey, where'd the brass go? I guess we'll have to use something else.");
+            BBLog.info("Reverting to default vanilla mc recipes.");
         }
 
     }
